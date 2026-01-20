@@ -49,8 +49,9 @@
             .form-header { @apply px-6 py-4 border-b border-gray-200 flex items-center justify-between bg-gray-50; }
             .form-header-title { @apply text-lg font-semibold text-gray-600; }
 
-            /* 表单分组 */
-            .form-group { @apply mb-8 px-6 scroll-mt-20; } /* 新增：scroll-mt-20 优化滚动定位 */
+            /* 表单分组 - 关键修改：基础信息模块padding-top:24px */
+            .form-group { @apply mb-8 px-6 scroll-mt-20; } 
+            #group-basic { @apply pt-6; } /* pt-6 对应24px，设置基础信息模块顶部内边距 */
             .form-group-title { @apply text-base font-medium text-gray-600 mb-4 flex items-center gap-2; }
             .form-group-title i { @apply text-primary; }
 
@@ -134,9 +135,14 @@
             /* 资质文件上传提示样式 */
             .qualification-upload-tips { @apply bg-primary/5 p-3 rounded-md text-sm text-gray-700 mb-4; }
 
-            /* ========== 新增：右侧锚点导航样式 ========== */
+            /* ========== 关键修改：表单导航样式调整 ========== */
             .anchor-nav {
-                @apply fixed right-4 top-1/2 -translate-y-1/2 bg-white rounded-lg shadow-md border border-gray-200 p-3 z-40 hidden lg:block;
+                @apply fixed right-12 top-[148px] bg-white rounded-lg shadow-md border border-gray-200 p-3 z-40 hidden lg:block;
+                /* 修改说明：
+                   1. right-12：右侧距离从right-4(16px)改为right-12(48px)，满足48px间距要求
+                   2. top-[148px]：固定顶部位置，与表单内容顶部对齐（148px是顶部导航+面包屑的高度）
+                   3. 移除translate-y-1/2，改为固定top值实现顶部对齐
+                */
                 width: 220px;
                 max-height: calc(100vh - 40px);
                 overflow-y: auto;
@@ -169,7 +175,39 @@
     </style>
 </head>
 <body class="page-container">
-   
+    <!-- 顶部导航 -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between max-w-7xl">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-building-columns text-primary text-xl"></i>
+                <h1 class="text-lg font-semibold">供应商管理系统</h1>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="relative hidden md:block">
+                    <input type="text" placeholder="全局搜索..." class="pl-8 pr-4 py-1.5 rounded border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm w-48">
+                    <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                </div>
+                <div class="flex items-center gap-2">
+                    <img src="https://picsum.photos/32/32" alt="用户头像" class="w-8 h-8 rounded-full object-cover">
+                    <span class="text-sm">系统管理员</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 面包屑 -->
+    <div class="container mx-auto px-4 py-3 max-w-7xl">
+        <nav class="flex text-sm text-gray-400" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                <li><a href="#" class="hover:text-primary">首页</a></li>
+                <li><i class="fa-solid fa-chevron-right mx-2 text-xs"></i></li>
+                <li><a href="#" class="hover:text-primary">供应商管理</a></li>
+                <li><i class="fa-solid fa-chevron-right mx-2 text-xs"></i></li>
+                <li class="text-gray-600 font-medium">新增供应商</li>
+            </ol>
+        </nav>
+    </div>
+
     <!-- ========== 新增：右侧锚点导航 ========== -->
     <div class="anchor-nav" id="anchorNav">
         <div class="anchor-nav-title">
