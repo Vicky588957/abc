@@ -60,6 +60,10 @@
             .form-item-full { @apply col-span-1 md:col-span-2 lg:col-span-3; }
             .form-item-row { @apply col-span-1 md:col-span-2 lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-6; }
             
+            /* 行内表单布局 - 自适应宽度 */
+            .inline-form-row { @apply flex flex-wrap gap-4 w-full; }
+            .inline-form-item { @apply flex-1 min-w-[200px]; }
+            
             /* 表单元素 */
             .form-label { @apply block text-sm font-medium text-gray-700 mb-1 flex items-center; }
             .form-label.required::after { content: '*'; @apply text-danger ml-1; }
@@ -72,7 +76,9 @@
             /* 按钮样式 */
             .form-btn { @apply px-6 py-2 rounded-md text-sm font-medium transition-all flex items-center gap-2; }
             .form-btn-primary { @apply bg-primary text-white hover:bg-primary/90; }
+            .form-btn-primary i { @apply text-white; } /* 新增：主按钮图标白色 */
             .form-btn-default { @apply bg-white border border-gray-200 text-gray-600 hover:bg-gray-50; }
+            .form-btn-sm { @apply px-3 py-1.5 text-xs; }
             .form-actions { @apply px-6 py-4 border-t border-gray-200 flex justify-end gap-3 bg-gray-50; }
 
             /* 复选框组 */
@@ -81,11 +87,8 @@
             .checkbox-input { @apply w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary/20 cursor-pointer; }
             .checkbox-label { @apply text-sm text-gray-600 cursor-pointer; }
 
-            /* 文件上传 */
-            .upload-area { @apply border-2 border-dashed border-gray-200 rounded-md p-6 text-center hover:border-primary transition-colors cursor-pointer; }
-            .upload-area i { @apply text-2xl text-gray-400 mb-2; }
-            .upload-text { @apply text-sm text-gray-500 mb-1; }
-            .upload-tip { @apply text-xs text-gray-400; }
+            /* 文件上传样式 */
+            .upload-btn { @apply form-btn form-btn-default form-btn-sm py-1.5 px-4; }
             .upload-list { @apply mt-3; }
             .upload-item { @apply flex items-center gap-3 p-3 border border-gray-200 rounded mb-2; }
             .upload-icon { @apply text-xl text-primary; }
@@ -93,11 +96,80 @@
             .upload-name { @apply text-sm font-medium; }
             .upload-size { @apply text-xs text-gray-400; }
             .upload-del { @apply text-gray-400 hover:text-danger text-sm p-1 rounded-full hover:bg-danger/5; }
+            
+            /* 资质文件卡片样式（核心修改） */
+            .qualification-card { @apply border border-gray-200 rounded-md p-4 mb-4 hover:shadow-sm transition-shadow; }
+            .qualification-card-header { @apply flex justify-between items-center mb-3; }
+            .qualification-card-title { @apply font-medium text-gray-700; }
+            .qualification-card-actions { @apply flex gap-2; }
+            .qualification-card-body { @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4; }
+            .qualification-card-info { @apply flex flex-col; }
+            .qualification-card-label { @apply text-xs text-gray-500 mb-1; }
+            .qualification-card-value { @apply text-sm text-gray-700; }
+            
+            /* 加载状态样式 */
+            .loading { @apply relative pointer-events-none; }
+            .loading::before {
+                content: '';
+                @apply absolute inset-0 bg-white/80 rounded-md flex items-center justify-center;
+            }
+            .loading::after {
+                content: '';
+                @apply w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin;
+            }
+            
+            /* 业务类型提示样式 */
+            .business-type-tips { @apply bg-primary/5 p-3 rounded-md text-sm text-gray-700 mt-2 mb-4; }
+
+            /* 弹窗样式 */
+            .modal-overlay { @apply fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden; }
+            .modal-overlay.show { @apply flex; }
+            .modal-container { @apply bg-white rounded-lg shadow-lg w-full max-w-lg mx-4; }
+            .modal-header { @apply px-6 py-4 border-b border-gray-200 flex items-center justify-between; }
+            .modal-title { @apply text-lg font-semibold text-gray-700; }
+            .modal-close { @apply text-gray-400 hover:text-gray-600 cursor-pointer; }
+            .modal-body { @apply px-6 py-4; }
+            .modal-footer { @apply px-6 py-4 border-t border-gray-200 flex justify-end gap-3; }
+            
+            /* 资质文件上传提示样式 */
+            .qualification-upload-tips { @apply bg-primary/5 p-3 rounded-md text-sm text-gray-700 mb-4; }
         }
     </style>
 </head>
 <body class="page-container">
-   
+    <!-- 顶部导航 -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between max-w-7xl">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-building-columns text-primary text-xl"></i>
+                <h1 class="text-lg font-semibold">供应商管理系统</h1>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="relative hidden md:block">
+                    <input type="text" placeholder="全局搜索..." class="pl-8 pr-4 py-1.5 rounded border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm w-48">
+                    <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                </div>
+                <div class="flex items-center gap-2">
+                    <img src="https://picsum.photos/32/32" alt="用户头像" class="w-8 h-8 rounded-full object-cover">
+                    <span class="text-sm">系统管理员</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 面包屑 -->
+    <div class="container mx-auto px-4 py-3 max-w-7xl">
+        <nav class="flex text-sm text-gray-400" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                <li><a href="#" class="hover:text-primary">首页</a></li>
+                <li><i class="fa-solid fa-chevron-right mx-2 text-xs"></i></li>
+                <li><a href="#" class="hover:text-primary">供应商管理</a></li>
+                <li><i class="fa-solid fa-chevron-right mx-2 text-xs"></i></li>
+                <li class="text-gray-600 font-medium">新增供应商</li>
+            </ol>
+        </nav>
+    </div>
+
     <!-- 主内容区 -->
     <main class="content-wrapper">
         <div class="form-card">
@@ -108,7 +180,7 @@
 
             <!-- 表单主体 -->
             <form id="supplierForm">
-                <!-- 基础信息组 - 增加padding-top:24px -->
+                <!-- 基础信息组 -->
                 <div class="form-group" style="padding-top: 24px;">
                     <div class="form-group-title">
                         <i class="fa-solid fa-id-card"></i>
@@ -130,7 +202,7 @@
                         <!-- 供应商名称（英文） -->
                         <div class="form-item" id="englishNameItem">
                             <label class="form-label">供应商名称（英文）</label>
-                            <input type="text" class="form-input" placeholder="供应商类型为服务商时必填">
+                            <input type="text" class="form-input" id="supplierEnglishName" placeholder="供应商类型为服务商时必填">
                             <div class="form-hint"><i class="fa-solid fa-circle-info"></i>仅服务商类型必填</div>
                             <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>供应商英文名称不能为空</div>
                         </div>
@@ -157,7 +229,7 @@
                         <!-- 外付类型 -->
                         <div class="form-item">
                             <label class="form-label required">外付类型</label>
-                            <select class="form-select">
+                            <select class="form-select" id="paymentType">
                                 <option value="">请选择外付类型</option>
                                 <option value="分包">分包</option>
                                 <option value="分成">分成</option>
@@ -169,7 +241,7 @@
                         <!-- 供应商分类 -->
                         <div class="form-item">
                             <label class="form-label required">供应商分类</label>
-                            <select class="form-select">
+                            <select class="form-select" id="supplierCategory">
                                 <option value="">请选择供应商分类</option>
                                 <option value="中央企业">中央企业</option>
                                 <option value="地方国企">地方国企</option>
@@ -210,19 +282,19 @@
                         <!-- 法定代表人 -->
                         <div class="form-item">
                             <label class="form-label required">法定代表人</label>
-                            <input type="text" class="form-input" placeholder="请输入法定代表人姓名">
+                            <input type="text" class="form-input" id="legalPerson" placeholder="请输入法定代表人姓名">
                             <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>法定代表人不能为空</div>
                         </div>
                         <!-- 注册资本 -->
                         <div class="form-item">
                             <label class="form-label required">注册资本（万元）</label>
-                            <input type="number" class="form-input" placeholder="请输入注册资本金额" min="0" step="0.01">
+                            <input type="number" class="form-input" id="registeredCapital" placeholder="请输入注册资本金额" min="0" step="0.01">
                             <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>注册资本不能为空</div>
                         </div>
                         <!-- 注册币种 -->
                         <div class="form-item">
                             <label class="form-label required">注册币种</label>
-                            <select class="form-select">
+                            <select class="form-select" id="registeredCurrency">
                                 <option value="">请选择注册币种</option>
                                 <option value="人民币">人民币</option>
                                 <option value="美元">美元</option>
@@ -235,53 +307,19 @@
                         <!-- 注册成立单位 -->
                         <div class="form-item">
                             <label class="form-label required">注册成立单位</label>
-                            <input type="text" class="form-input" placeholder="请输入批准成立的主管单位">
+                            <input type="text" class="form-input" id="registeredUnit" placeholder="请输入批准成立的主管单位">
                             <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>注册成立单位不能为空</div>
                         </div>
                         <!-- 成立时间 -->
                         <div class="form-item">
                             <label class="form-label required">成立时间</label>
-                            <input type="date" class="form-input">
+                            <input type="date" class="form-input" id="establishmentDate">
                             <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>成立时间不能为空</div>
                         </div>
-                        <!-- 风险等级 -->
-                        <div class="form-item">
-                            <label class="form-label required">风险等级</label>
-                            <select class="form-select">
-                                <option value="">请选择风险等级</option>
-                                <option value="0">0 无风险</option>
-                                <option value="1">1 低风险</option>
-                                <option value="2">2 中风险</option>
-                                <option value="3">3 高风险</option>
-                            </select>
-                            <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>风险等级不能为空</div>
-                        </div>
-                        
-                        <!-- 风险程度和禁用说明同行展示 -->
-                        <div class="form-item-row">
-                            <!-- 风险程度 - 修改选项：0 待禁用/1 未禁用 / 2 已禁用 -->
-                            <div class="form-item">
-                                <label class="form-label required">风险程度</label>
-                                <select class="form-select" id="riskLevel">
-                                    <option value="">请选择风险程度</option>
-                                    <option value="0">0 待禁用</option>
-                                    <option value="1">1 未禁用</option>
-                                    <option value="2">2 已禁用</option>
-                                </select>
-                                <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>风险程度不能为空</div>
-                            </div>
-                            <!-- 禁用说明 - 改为输入框并拉宽 -->
-                            <div class="form-item form-item-full" id="disableReasonItem">
-                                <label class="form-label" id="disableReasonLabel">禁用说明</label>
-                                <input type="text" class="form-input" placeholder="风险程度为已禁用时必填">
-                                <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>禁用说明不能为空</div>
-                            </div>
-                        </div>
-                        
                         <!-- 供应商有效期 -->
                         <div class="form-item">
                             <label class="form-label required">供应商有效期</label>
-                            <select class="form-select">
+                            <select class="form-select" id="validityPeriod">
                                 <option value="">请选择有效期</option>
                                 <option value="1">1年</option>
                                 <option value="2">2年</option>
@@ -290,31 +328,88 @@
                             </select>
                             <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>供应商有效期不能为空</div>
                         </div>
-                        <!-- 时区 -->
+                        <!-- 新增：风险等级字段 -->
                         <div class="form-item">
-                            <label class="form-label required">时区</label>
-                            <select class="form-select">
-                                <option value="">请选择时区</option>
-                                <option value="UTC+8">UTC+8 (中国标准时间)</option>
-                                <option value="UTC+7">UTC+7 (东南亚)</option>
-                                <option value="UTC+0">UTC+0 (格林威治时间)</option>
-                                <option value="UTC-5">UTC-5 (美国东部时间)</option>
-                                <option value="其他">其他</option>
+                            <label class="form-label required">风险等级</label>
+                            <select class="form-select" id="riskLevel">
+                                <option value="">请选择风险等级</option>
+                                <option value="0">0 无风险</option>
+                                <option value="1">1 低风险</option>
+                                <option value="2">2 中风险</option>
+                                <option value="3">3 高风险</option>
                             </select>
-                            <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>时区不能为空</div>
+                            <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>风险等级不能为空</div>
                         </div>
-                        <!-- 主要业务语言 -->
-                        <div class="form-item">
-                            <label class="form-label required">主要业务语言</label>
-                            <select class="form-select">
-                                <option value="">请选择主要业务语言</option>
-                                <option value="中文">中文</option>
-                                <option value="英文">英文</option>
-                                <option value="日文">日文</option>
-                                <option value="韩文">韩文</option>
-                                <option value="其他">其他</option>
-                            </select>
-                            <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>主要业务语言不能为空</div>
+                    </div>
+                </div>
+
+                <!-- 国家名称模块 -->
+                <div class="form-group">
+                    <div class="form-group-title">
+                        <i class="fa-solid fa-globe"></i>
+                        国家/地区信息
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-item-full">
+                            <!-- 区域类型、国家/地区、时区、主要业务语言 - 一行显示 -->
+                            <div class="inline-form-row">
+                                <!-- 区域类型 -->
+                                <div class="inline-form-item">
+                                    <label class="form-label required">区域类型</label>
+                                    <select class="form-select" id="regionType">
+                                        <option value="domestic" selected>国内</option>
+                                        <option value="foreign">国外</option>
+                                    </select>
+                                    <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>区域类型不能为空</div>
+                                </div>
+                                
+                                <!-- 国家/地区 -->
+                                <div class="inline-form-item">
+                                    <label class="form-label required">国家/地区</label>
+                                    <select class="form-select" id="countryRegion">
+                                        <option value="">请选择国家/地区</option>
+                                        <option value="中国大陆" selected>中国大陆</option>
+                                        <option value="中国香港">中国香港</option>
+                                        <option value="中国澳门">中国澳门</option>
+                                        <option value="中国台湾">中国台湾</option>
+                                        <option value="美国">美国</option>
+                                        <option value="英国">英国</option>
+                                        <option value="日本">日本</option>
+                                        <option value="德国">德国</option>
+                                        <option value="法国">法国</option>
+                                    </select>
+                                    <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>国家/地区不能为空</div>
+                                </div>
+                                
+                                <!-- 时区 -->
+                                <div class="inline-form-item">
+                                    <label class="form-label required">时区</label>
+                                    <select class="form-select" id="timezone">
+                                        <option value="">请选择时区</option>
+                                        <option value="UTC+8" selected>北京时间(UTC+08)</option>
+                                        <option value="UTC-5">纽约时间(UTC-05)</option>
+                                        <option value="UTC+0">伦敦时间(UTC+00)</option>
+                                        <option value="UTC+9">东京时间(UTC+09)</option>
+                                        <option value="UTC+1">柏林时间(UTC+01)</option>
+                                    </select>
+                                    <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>时区不能为空</div>
+                                </div>
+                                
+                                <!-- 主要业务语言 -->
+                                <div class="inline-form-item">
+                                    <label class="form-label required">主要业务语言</label>
+                                    <select class="form-select" id="businessLanguage">
+                                        <option value="">请选择主要业务语言</option>
+                                        <option value="中文" selected>中文简体</option>
+                                        <option value="英文">英文</option>
+                                        <option value="日文">日文</option>
+                                        <option value="繁体中文">繁体中文</option>
+                                        <option value="德文">德文</option>
+                                        <option value="法文">法文</option>
+                                    </select>
+                                    <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>主要业务语言不能为空</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -327,77 +422,54 @@
                     </div>
                     <div class="form-item-full">
                         <label class="form-label required">业务类型（可多选）</label>
-                        <div class="checkbox-group">
+                        <div class="checkbox-group" id="businessTypeGroup">
                             <div class="checkbox-item">
-                                <input type="checkbox" id="type1" class="checkbox-input" value="服务提供商">
+                                <!-- 移除checked属性，取消默认选中 -->
+                                <input type="checkbox" id="type1" class="checkbox-input business-type" value="服务提供商">
                                 <label for="type1" class="checkbox-label">服务提供商</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" id="type2" class="checkbox-input" value="分包方">
+                                <input type="checkbox" id="type2" class="checkbox-input business-type" value="分包方">
                                 <label for="type2" class="checkbox-label">分包方</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" id="type3" class="checkbox-input" value="物资供应商">
+                                <input type="checkbox" id="type3" class="checkbox-input business-type" value="物资供应商">
                                 <label for="type3" class="checkbox-label">物资供应商</label>
                             </div>
                         </div>
-                        <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>至少选择一种业务类型</div>
+                        <!-- 移除原位置的业务类型提示 -->
+                        <div class="form-error" id="businessTypeError"><i class="fa-solid fa-circle-exclamation"></i>至少选择一种业务类型</div>
                     </div>
                 </div>
 
-                <!-- 资质文件上传(必传)：资质审核、社保证明、实缴资本证明、资质证书 -->
+                <!-- 资质文件上传模块（核心改造） -->
                 <div class="form-group" id="fileUploadGroup">
-                    <div class="form-group-title">
-                        <i class="fa-solid fa-file-upload"></i>
-                        资质文件上传
+                    <div class="form-group-title flex justify-between items-center">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-file-upload"></i>
+                            资质文件上传
+                        </div>
+                        <!-- 添加资质文件按钮（点击打开弹窗） -->
+                        <button type="button" class="form-btn form-btn-primary form-btn-sm" id="addQualificationBtn">
+                            <i class="fa-solid fa-plus"></i> 添加资质文件
+                        </button>
                     </div>
-                    <div class="form-grid">
-                        <!-- 资质审核文件 -->
-                        <div class="form-item-full">
-                            <label class="form-label required">资质审核文件</label>
-                            <div class="upload-area">
-                                <i class="fa-solid fa-cloud-upload"></i>
-                                <div class="upload-text">点击或拖拽文件至此处上传（资质审核相关证明文件）</div>
-                                <div class="upload-tip">支持 PDF、JPG、PNG 格式，单个文件不超过 10MB</div>
-                                <input type="file" class="hidden" multiple accept=".pdf,.jpg,.jpeg,.png" id="qualificationAuditFile">
-                            </div>
-                            <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>资质审核文件不能为空</div>
+                    
+                    <!-- 业务类型说明迁移到这里 -->
+                    <div id="businessTypeTips" class="business-type-tips">
+                        <div id="tipsContent">请根据选择的业务类型上传对应的资质文件：<br>
+                            <strong>服务提供商：</strong>资质审核文件（营业执照等经营许可证明）、纳税社保证明（三月内任一纳税和社保证明）<br>
+                            <strong>分包方：</strong>资质审核文件（营业执照等经营许可证明）、纳税社保证明（三月内任一纳税和社保证明）、实缴资本证明（工商登记或天眼查或股东资金转入公账凭证）、资质证书文件（CIA8、法定、CI、劳务派遣经营许可证等）<br>
+                            <strong>物资供应商：</strong>资质审核文件（营业执照等经营许可证明）、纳税社保证明（三月内任一纳税和社保证明）
                         </div>
-
-                        <!-- 社保证明文件 -->
-                        <div class="form-item-full">
-                            <label class="form-label required">社保证明文件</label>
-                            <div class="upload-area">
-                                <i class="fa-solid fa-cloud-upload"></i>
-                                <div class="upload-text">点击或拖拽文件至此处上传（社保证明相关文件）</div>
-                                <div class="upload-tip">支持 PDF、JPG、PNG 格式，单个文件不超过 10MB</div>
-                                <input type="file" class="hidden" multiple accept=".pdf,.jpg,.jpeg,.png" id="socialSecurityFile">
-                            </div>
-                            <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>社保证明文件不能为空</div>
-                        </div>
-
-                        <!-- 实缴资本证明文件 -->
-                        <div class="form-item-full">
-                            <label class="form-label required">实缴资本证明文件</label>
-                            <div class="upload-area">
-                                <i class="fa-solid fa-cloud-upload"></i>
-                                <div class="upload-text">点击或拖拽文件至此处上传（实缴资本证明相关文件）</div>
-                                <div class="upload-tip">支持 PDF、JPG、PNG 格式，单个文件不超过 10MB</div>
-                                <input type="file" class="hidden" multiple accept=".pdf,.jpg,.jpeg,.png" id="paidCapitalFile">
-                            </div>
-                            <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>实缴资本证明文件不能为空</div>
-                        </div>
-
-                        <!-- 资质证书文件 -->
-                        <div class="form-item-full">
-                            <label class="form-label required">资质证书文件</label>
-                            <div class="upload-area">
-                                <i class="fa-solid fa-cloud-upload"></i>
-                                <div class="upload-text">点击或拖拽文件至此处上传（资质证书相关文件）</div>
-                                <div class="upload-tip">支持 PDF、JPG、PNG 格式，单个文件不超过 10MB</div>
-                                <input type="file" class="hidden" multiple accept=".pdf,.jpg,.jpeg,.png" id="qualificationCertificateFile">
-                            </div>
-                            <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>资质证书文件不能为空</div>
+                    </div>
+                    
+                    <!-- 资质文件列表容器（卡片式展示） -->
+                    <div id="qualificationList" class="mt-4">
+                        <!-- 初始无文件状态 -->
+                        <div id="emptyQualification" class="text-center py-8 text-gray-400">
+                            <i class="fa-solid fa-file-alt text-4xl mb-2"></i>
+                            <p>暂无上传的资质文件，请点击"添加资质文件"按钮上传</p>
                         </div>
                     </div>
                 </div>
@@ -409,120 +481,87 @@
                         地址信息
                     </div>
                     <div class="form-grid">
-                        <!-- 国别 -->
-                        <div class="form-item">
-                            <label class="form-label required">国别</label>
-                            <select class="form-select" id="country">
-                                <option value="">请选择国别</option>
-                                <option value="中国">中国</option>
-                                <option value="美国">美国</option>
-                                <option value="日本">日本</option>
-                                <option value="韩国">韩国</option>
-                                <option value="其他">其他</option>
-                            </select>
-                            <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>国别不能为空</div>
+                        <!-- 省市区（仅国内显示） -->
+                        <div id="addressRegionWrapper" class="form-item-full">
+                            <!-- 省、市、区县 - 一行显示 -->
+                            <div class="inline-form-row">
+                                <!-- 省、直辖市 -->
+                                <div class="inline-form-item" id="provinceItem">
+                                    <label class="form-label required">省/直辖市</label>
+                                    <select class="form-select" id="province">
+                                        <option value="">请选择省/直辖市</option>
+                                        <option value="北京市">北京市</option>
+                                        <option value="上海市">上海市</option>
+                                        <option value="广东省">广东省</option>
+                                        <option value="江苏省">江苏省</option>
+                                    </select>
+                                    <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>省/直辖市不能为空</div>
+                                </div>
+                                <!-- 市（省级） -->
+                                <div class="inline-form-item" id="cityItem">
+                                    <label class="form-label required">市</label>
+                                    <select class="form-select" id="city">
+                                        <option value="">请先选择省/直辖市</option>
+                                    </select>
+                                    <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>市不能为空</div>
+                                </div>
+                                <!-- 区县 -->
+                                <div class="inline-form-item" id="districtItem">
+                                    <label class="form-label required">区县</label>
+                                    <select class="form-select" id="district">
+                                        <option value="">请先选择市</option>
+                                    </select>
+                                    <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>区县不能为空</div>
+                                </div>
+                            </div>
                         </div>
-                        <!-- 国家/地区 -->
-                        <div class="form-item">
-                            <label class="form-label required">国家/地区</label>
-                            <select class="form-select" id="region">
-                                <option value="">请先选择国别</option>
-                            </select>
-                            <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>国家/地区不能为空</div>
-                        </div>
-                        <!-- 省、直辖市 -->
-                        <div class="form-item">
-                            <label class="form-label required">省、直辖市</label>
-                            <select class="form-select" id="province">
-                                <option value="">请先选择国家/地区</option>
-                            </select>
-                            <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>省、直辖市不能为空</div>
-                        </div>
-                        <!-- 市（省级） -->
-                        <div class="form-item">
-                            <label class="form-label required">市（省级）</label>
-                            <select class="form-select" id="city">
-                                <option value="">请先选择省、直辖市</option>
-                            </select>
-                            <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>市（省级）不能为空</div>
-                        </div>
-                        <!-- 县/区 -->
-                        <div class="form-item">
-                            <label class="form-label required">县/直辖市区/市（省级）区</label>
-                            <select class="form-select" id="district">
-                                <option value="">请先选择市（省级）</option>
-                            </select>
-                            <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>县/区不能为空</div>
-                        </div>
-                        <!-- 公司网址 -->
-                        <div class="form-item">
-                            <label class="form-label">公司网址</label>
-                            <input type="url" class="form-input" placeholder="请输入公司官网地址">
-                        </div>
-                        <!-- 注册地址 -->
-                        <div class="form-item-full">
+                        
+                        <!-- 注册地址（国内） -->
+                        <div class="form-item-full" id="registerAddressItem">
                             <label class="form-label required">注册地址</label>
-                            <input type="text" class="form-input" placeholder="请输入详细注册地址">
+                            <input type="text" class="form-input" id="registerAddress" placeholder="请输入详细注册地址">
                             <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>注册地址不能为空</div>
                         </div>
-                        <!-- 注册地址（英文） -->
+                        
+                        <!-- 注册地址（英文/国外） -->
+                        <div class="form-item-full" id="registerAddressEnItem" style="display: none;">
+                            <label class="form-label required">注册地址（英文）</label>
+                            <input type="text" class="form-input" id="registerAddressEn" placeholder="请输入详细注册地址（英文）">
+                            <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>注册地址（英文）不能为空</div>
+                        </div>
+                        
+                        <!-- 公司网址（调整到注册地址下方） -->
                         <div class="form-item-full">
-                            <label class="form-label">注册地址（英文）</label>
-                            <input type="text" class="form-input" placeholder="涉外业务必填">
-                            <div class="form-hint"><i class="fa-solid fa-circle-info"></i>用于涉外业务</div>
+                            <label class="form-label">公司网址</label>
+                            <input type="url" class="form-input" id="companyWebsite" placeholder="请输入公司官网地址">
                         </div>
                     </div>
                 </div>
 
-                <!-- 经营范围 - 改为不必填 -->
+                <!-- 经营范围 -->
                 <div class="form-group">
                     <div class="form-group-title">
                         <i class="fa-solid fa-list-alt"></i>
                         经营范围
                     </div>
                     <div class="form-grid">
-                        <!-- 经营范围 -->
                         <div class="form-item-full">
                             <label class="form-label">经营范围</label>
-                            <textarea class="form-textarea" rows="4" placeholder="请输入详细经营范围（选填）"></textarea>
-                        </div>
-                        <!-- 经营范围（英文） -->
-                        <div class="form-item-full">
-                            <label class="form-label">经营范围（英文）</label>
-                            <textarea class="form-textarea" rows="4" placeholder="涉外业务必填"></textarea>
-                            <div class="form-hint"><i class="fa-solid fa-circle-info"></i>用于涉外业务</div>
+                            <textarea class="form-textarea" id="businessScope" rows="4" placeholder="请输入详细经营范围（选填）"></textarea>
                         </div>
                     </div>
                 </div>
 
-                <!-- 合格评定信息 - 供应商合格评定信息改为不必填 -->
+                <!-- 简化供应商合格评定信息为单个文本框，改为非必填 -->
                 <div class="form-group">
                     <div class="form-group-title">
-                        <i class="fa-solid fa-check-circle"></i>
-                        合格评定信息
+                        <i class="fa-solid fa-check-double"></i>
+                        供应商合格评定信息
                     </div>
                     <div class="form-grid">
-                        <!-- 供应商合格评定信息 - 移除required -->
                         <div class="form-item-full">
-                            <label class="form-label">供应商合格评定信息</label>
-                            <textarea class="form-textarea" rows="4" placeholder="请填写供应商资质合格评定的相关说明或结果（选填）"></textarea>
-                        </div>
-                        
-                        <!-- 评定文件上传区域（动态生成） -->
-                        <div class="form-item-full" id="evaluationFilesContainer">
-                            <label class="form-label required">评定文件</label>
-                            <div id="evaluationFileList">
-                                <!-- 初始默认一个上传入口 -->
-                                <div class="evaluation-file-item mb-4">
-                                    <div class="upload-area">
-                                        <i class="fa-solid fa-cloud-upload"></i>
-                                        <div class="upload-text">点击或拖拽文件至此处上传（供应商资质评定证明文件）</div>
-                                        <div class="upload-tip">支持 PDF、JPG、PNG 格式，单个文件不超过 10MB</div>
-                                        <input type="file" class="hidden evaluation-file-input" multiple accept=".pdf,.jpg,.jpeg,.png">
-                                    </div>
-                                    <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>评定文件不能为空</div>
-                                </div>
-                            </div>
+                            <label class="form-label">合格评定信息（选填）</label>
+                            <textarea class="form-textarea" id="assessmentInfo" rows="3" placeholder="请输入供应商合格评定相关信息"></textarea>
                         </div>
                     </div>
                 </div>
@@ -530,7 +569,7 @@
                 <!-- 表单操作按钮 -->
                 <div class="form-actions">
                     <button type="button" class="form-btn form-btn-default">
-                        <i class="fa-solid fa-arrow-left"></i> 返回列表
+                        <i class="fa-solid fa-arrow-left"></i> 返回
                     </button>
                     <button type="button" class="form-btn form-btn-default">
                         <i class="fa-solid fa-save"></i> 保存草稿
@@ -543,419 +582,513 @@
         </div>
     </main>
 
+    <!-- 添加/修改资质文件弹窗 -->
+    <div class="modal-overlay" id="qualificationModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">上传资质文件</h3>
+                <span class="modal-close" id="closeModal">
+                    <i class="fa-solid fa-xmark"></i>
+                </span>
+            </div>
+            <div class="modal-body">
+                <!-- 存储当前编辑的卡片索引 -->
+                <input type="hidden" id="editCardIndex" value="-1">
+                <div class="mb-4">
+                    <!-- 弹窗中的文件类型改为文件名称 -->
+                    <label class="form-label required">文件名称</label>
+                    <input type="text" class="form-input" id="modalFileName" placeholder="请输入文件名称">
+                    <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>文件名称不能为空</div>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label required">选择文件</label>
+                    <input type="file" class="form-input" id="modalFileInput" accept=".pdf,.jpg,.jpeg,.png">
+                    <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>请选择要上传的文件</div>
+                    <!-- 显示已上传的文件名（修改模式） -->
+                    <div id="existingFileName" class="form-hint mt-2" style="display: none;">
+                        <i class="fa-solid fa-file"></i> <span id="existingFileNameText"></span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="form-label required">上传日期</label>
+                        <input type="date" class="form-input" id="modalUploadDate">
+                        <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>上传日期不能为空</div>
+                    </div>
+                    <div>
+                        <label class="form-label required">有效期至</label>
+                        <input type="date" class="form-input" id="modalExpireDate">
+                        <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>有效期至不能为空</div>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">备注说明</label>
+                    <textarea class="form-textarea" id="modalRemark" rows="2" placeholder="请输入文件备注说明（选填）"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="form-btn form-btn-default" id="cancelModalBtn">
+                    <i class="fa-solid fa-times"></i> 取消
+                </button>
+                <button type="button" class="form-btn form-btn-primary" id="saveQualificationBtn">
+                    <i class="fa-solid fa-save"></i> 保存
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // 1. 交易类型联动：服务商显示英文名称输入框
-            const tradeTypeSelect = document.getElementById('supplierTradeType');
-            const englishNameItem = document.getElementById('englishNameItem');
-            const englishNameLabel = englishNameItem.querySelector('.form-label');
-            const englishNameError = englishNameItem.querySelector('.form-error');
-            const englishNameHint = englishNameItem.querySelector('.form-hint');
-            
-            tradeTypeSelect.addEventListener('change', function() {
-                if (this.value === '服务') {
-                    englishNameLabel.classList.add('required');
-                    englishNameHint.style.display = 'none';
-                } else {
-                    englishNameLabel.classList.remove('required');
-                    englishNameHint.style.display = 'flex';
-                    englishNameError.style.display = 'none';
-                    englishNameError.classList.remove('show');
-                }
-            });
-
-            // 2. 风险程度联动：已禁用显示禁用说明必填
-            const riskLevelSelect = document.getElementById('riskLevel');
-            const disableReasonItem = document.getElementById('disableReasonItem');
-            const disableReasonLabel = document.getElementById('disableReasonLabel');
-            const disableReasonError = disableReasonItem.querySelector('.form-error');
-            
-            riskLevelSelect.addEventListener('change', function() {
-                if (this.value === '2') {
-                    disableReasonLabel.classList.add('required');
-                } else {
-                    disableReasonLabel.classList.remove('required');
-                    disableReasonError.style.display = 'none';
-                    disableReasonError.classList.remove('show');
-                    disableReasonItem.querySelector('input').classList.remove('error');
-                }
-            });
-
-            // 3. 业务类型复选框联动：动态生成对应数量的评定文件上传入口
-            const businessTypeCheckboxes = document.querySelectorAll('.checkbox-input');
-            const evaluationFileList = document.getElementById('evaluationFileList');
-            
-            // 初始化评定文件上传入口生成函数
-            function generateEvaluationFiles() {
-                // 清空现有上传入口（保留模板）
-                evaluationFileList.innerHTML = '';
-                
-                // 获取选中的业务类型数量
-                const checkedCount = Array.from(businessTypeCheckboxes).filter(cb => cb.checked).length;
-                const count = checkedCount > 0 ? checkedCount : 1;
-                
-                // 生成对应数量的上传入口
-                for (let i = 0; i < count; i++) {
-                    const fileItem = document.createElement('div');
-                    fileItem.className = 'evaluation-file-item mb-4';
-                    fileItem.innerHTML = `
-                        <div class="upload-area">
-                            <i class="fa-solid fa-cloud-upload"></i>
-                            <div class="upload-text">点击或拖拽文件至此处上传（供应商资质评定证明文件 ${i+1}）</div>
-                            <div class="upload-tip">支持 PDF、JPG、PNG 格式，单个文件不超过 10MB</div>
-                            <input type="file" class="hidden evaluation-file-input" multiple accept=".pdf,.jpg,.jpeg,.png">
-                        </div>
-                        <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>评定文件 ${i+1} 不能为空</div>
-                    `;
-                    evaluationFileList.appendChild(fileItem);
-                    
-                    // 绑定文件上传点击事件
-                    const uploadArea = fileItem.querySelector('.upload-area');
-                    const fileInput = fileItem.querySelector('.evaluation-file-input');
-                    uploadArea.addEventListener('click', function() {
-                        fileInput.click();
-                    });
-                    
-                    // 文件选择后处理
-                    fileInput.addEventListener('change', function() {
-                        if (this.files.length > 0) {
-                            console.log(`选择的评定文件 ${i+1}：`, this.files);
-                        }
-                    });
-                }
+        // 省市区数据（示例）
+        const regionData = {
+            "北京市": {
+                "北京市": ["东城区", "西城区", "朝阳区", "海淀区", "丰台区", "石景山区", "通州区", "顺义区", "昌平区", "大兴区", "房山区", "门头沟区", "怀柔区", "平谷区", "密云区", "延庆区"]
+            },
+            "上海市": {
+                "上海市": ["黄浦区", "徐汇区", "长宁区", "静安区", "普陀区", "虹口区", "杨浦区", "闵行区", "宝山区", "嘉定区", "浦东新区", "金山区", "松江区", "青浦区", "奉贤区", "崇明区"]
+            },
+            "广东省": {
+                "广州市": ["荔湾区", "越秀区", "海珠区", "天河区", "白云区", "黄埔区", "番禺区", "花都区", "南沙区", "从化区", "增城区"],
+                "深圳市": ["罗湖区", "福田区", "南山区", "宝安区", "龙岗区", "盐田区", "龙华区", "坪山区", "光明区"],
+                "东莞市": ["莞城区", "南城区", "东城区", "万江区", "石龙镇", "虎门镇", "长安镇", "厚街镇", "沙田镇", "道滘镇", "洪梅镇", "麻涌镇", "中堂镇", "高埗镇", "石碣镇", "望牛墩镇", "企石镇", "石排镇", "横沥镇", "桥头镇", "谢岗镇", "东坑镇", "常平镇", "寮步镇", "大朗镇", "黄江镇", "清溪镇", "塘厦镇", "凤岗镇", "大岭山镇", "长安镇", "虎门镇"]
+            },
+            "江苏省": {
+                "南京市": ["玄武区", "秦淮区", "建邺区", "鼓楼区", "浦口区", "栖霞区", "雨花台区", "江宁区", "六合区", "溧水区", "高淳区"],
+                "苏州市": ["姑苏区", "虎丘区", "吴中区", "相城区", "吴江区", "昆山市", "张家港市", "常熟市", "太仓市"]
             }
-            
-            // 业务类型变更时重新生成评定文件上传入口
-            businessTypeCheckboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', generateEvaluationFiles);
-            });
-            
-            // 页面加载时初始化生成一个上传入口
-            generateEvaluationFiles();
+        };
 
-            // 4. 地址联动（中国地区联动）
-            const countrySelect = document.getElementById('country');
-            const regionSelect = document.getElementById('region');
+        // 存储资质文件数据
+        let qualificationFiles = [];
+
+        // DOM加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1. 省市区联动
             const provinceSelect = document.getElementById('province');
             const citySelect = document.getElementById('city');
             const districtSelect = document.getElementById('district');
 
-            // 国别变更联动
-            countrySelect.addEventListener('change', function() {
-                // 清空下级选项
-                regionSelect.innerHTML = '';
-                provinceSelect.innerHTML = '';
-                citySelect.innerHTML = '';
-                districtSelect.innerHTML = '';
-
-                if (this.value === '中国') {
-                    // 添加中国地区选项
-                    const regionOptions = [
-                        { value: '', text: '请选择' },
-                        { value: '中国大陆', text: '中国大陆' },
-                        { value: '中国香港', text: '中国香港' },
-                        { value: '中国澳门', text: '中国澳门' },
-                        { value: '中国台湾', text: '中国台湾' }
-                    ];
-                    
-                    regionOptions.forEach(option => {
-                        const opt = document.createElement('option');
-                        opt.value = option.value;
-                        opt.textContent = option.text;
-                        regionSelect.appendChild(opt);
-                    });
-                } else {
-                    // 其他国家
-                    const opt = document.createElement('option');
-                    opt.value = this.value;
-                    opt.textContent = this.value;
-                    regionSelect.appendChild(opt);
-                    
-                    // 简化其他国家的地址选择
-                    provinceSelect.innerHTML = `<option value="${this.value}">${this.value}</option>`;
-                    citySelect.innerHTML = `<option value="${this.value}">${this.value}</option>`;
-                    districtSelect.innerHTML = `<option value="${this.value}">${this.value}</option>`;
-                }
-            });
-
-            // 地区变更联动（中国大陆）
-            regionSelect.addEventListener('change', function() {
-                if (this.value === '中国大陆') {
-                    // 示例：添加部分省份
-                    const provinceOptions = [
-                        { value: '', text: '请选择' },
-                        { value: '北京市', text: '北京市' },
-                        { value: '上海市', text: '上海市' },
-                        { value: '广东省', text: '广东省' },
-                        { value: '江苏省', text: '江苏省' }
-                    ];
-                    
-                    provinceSelect.innerHTML = '';
-                    provinceOptions.forEach(option => {
-                        const opt = document.createElement('option');
-                        opt.value = option.value;
-                        opt.textContent = option.text;
-                        provinceSelect.appendChild(opt);
-                    });
-                } else if (this.value) {
-                    // 港澳台地区
-                    provinceSelect.innerHTML = `<option value="${this.value}">${this.value}</option>`;
-                    citySelect.innerHTML = `<option value="${this.value}">${this.value}</option>`;
-                    districtSelect.innerHTML = `<option value="${this.value}">${this.value}</option>`;
-                }
-            });
-
-            // 省份变更联动
+            // 省份变化事件
             provinceSelect.addEventListener('change', function() {
-                citySelect.innerHTML = '';
-                districtSelect.innerHTML = '';
-
-                if (this.value === '北京市') {
-                    const cityOptions = [
-                        { value: '', text: '请选择' },
-                        { value: '北京市', text: '北京市' }
-                    ];
-                    
-                    cityOptions.forEach(option => {
-                        const opt = document.createElement('option');
-                        opt.value = option.value;
-                        opt.textContent = option.text;
-                        citySelect.appendChild(opt);
+                // 清空市和区县
+                citySelect.innerHTML = '<option value="">请选择市</option>';
+                districtSelect.innerHTML = '<option value="">请先选择市</option>';
+                
+                const selectedProvince = this.value;
+                if (selectedProvince && regionData[selectedProvince]) {
+                    // 添加市选项
+                    Object.keys(regionData[selectedProvince]).forEach(city => {
+                        const option = document.createElement('option');
+                        option.value = city;
+                        option.textContent = city;
+                        citySelect.appendChild(option);
                     });
-                } else if (this.value === '上海市') {
-                    const cityOptions = [
-                        { value: '', text: '请选择' },
-                        { value: '上海市', text: '上海市' }
-                    ];
-                    
-                    cityOptions.forEach(option => {
-                        const opt = document.createElement('option');
-                        opt.value = option.value;
-                        opt.textContent = option.text;
-                        citySelect.appendChild(opt);
-                    });
-                } else if (this.value === '广东省') {
-                    const cityOptions = [
-                        { value: '', text: '请选择' },
-                        { value: '广州市', text: '广州市' },
-                        { value: '深圳市', text: '深圳市' },
-                        { value: '东莞市', text: '东莞市' }
-                    ];
-                    
-                    cityOptions.forEach(option => {
-                        const opt = document.createElement('option');
-                        opt.value = option.value;
-                        opt.textContent = option.text;
-                        citySelect.appendChild(opt);
-                    });
-                } else if (this.value) {
-                    // 其他省份默认
-                    const opt = document.createElement('option');
-                    opt.value = this.value;
-                    opt.textContent = this.value;
-                    citySelect.appendChild(opt);
                 }
             });
 
-            // 城市变更联动
+            // 市变化事件
             citySelect.addEventListener('change', function() {
-                districtSelect.innerHTML = '';
-
-                if (this.value === '北京市') {
-                    const districtOptions = [
-                        { value: '', text: '请选择' },
-                        { value: '东城区', text: '东城区' },
-                        { value: '西城区', text: '西城区' },
-                        { value: '海淀区', text: '海淀区' },
-                        { value: '朝阳区', text: '朝阳区' }
-                    ];
-                    
-                    districtOptions.forEach(option => {
-                        const opt = document.createElement('option');
-                        opt.value = option.value;
-                        opt.textContent = option.text;
-                        districtSelect.appendChild(opt);
+                // 清空区县
+                districtSelect.innerHTML = '<option value="">请选择区县</option>';
+                
+                const selectedProvince = provinceSelect.value;
+                const selectedCity = this.value;
+                
+                if (selectedProvince && selectedCity && regionData[selectedProvince][selectedCity]) {
+                    // 添加区县选项
+                    regionData[selectedProvince][selectedCity].forEach(district => {
+                        const option = document.createElement('option');
+                        option.value = district;
+                        option.textContent = district;
+                        districtSelect.appendChild(option);
                     });
-                } else if (this.value === '广州市') {
-                    const districtOptions = [
-                        { value: '', text: '请选择' },
-                        { value: '天河区', text: '天河区' },
-                        { value: '越秀区', text: '越秀区' },
-                        { value: '海珠区', text: '海珠区' }
-                    ];
-                    
-                    districtOptions.forEach(option => {
-                        const opt = document.createElement('option');
-                        opt.value = option.value;
-                        opt.textContent = option.text;
-                        districtSelect.appendChild(opt);
-                    });
-                } else if (this.value) {
-                    // 其他城市默认
-                    const opt = document.createElement('option');
-                    opt.value = this.value;
-                    opt.textContent = this.value;
-                    districtSelect.appendChild(opt);
                 }
             });
 
-            // 5. 信用代码格式校验
+            // 2. 区域类型切换（国内/国外）
+            const regionTypeSelect = document.getElementById('regionType');
+            const addressRegionWrapper = document.getElementById('addressRegionWrapper');
+            const registerAddressItem = document.getElementById('registerAddressItem');
+            const registerAddressEnItem = document.getElementById('registerAddressEnItem');
+
+            regionTypeSelect.addEventListener('change', function() {
+                if (this.value === 'foreign') {
+                    // 国外：隐藏省市区，显示英文地址
+                    addressRegionWrapper.style.display = 'none';
+                    registerAddressItem.style.display = 'none';
+                    registerAddressEnItem.style.display = 'block';
+                } else {
+                    // 国内：显示省市区，显示中文地址
+                    addressRegionWrapper.style.display = 'block';
+                    registerAddressItem.style.display = 'block';
+                    registerAddressEnItem.style.display = 'none';
+                }
+            });
+
+            // 3. 业务类型选择影响英文名称必填性
+            const businessTypeCheckboxes = document.querySelectorAll('.business-type');
+            const englishNameItem = document.getElementById('englishNameItem');
+            const englishNameError = englishNameItem.querySelector('.form-error');
+            const englishNameInput = document.getElementById('supplierEnglishName');
+
+            function checkBusinessType() {
+                let isServiceProvider = false;
+                businessTypeCheckboxes.forEach(checkbox => {
+                    if (checkbox.checked && checkbox.value === '服务提供商') {
+                        isServiceProvider = true;
+                    }
+                });
+
+                if (isServiceProvider) {
+                    // 服务商：英文名称必填
+                    englishNameItem.querySelector('.form-label').classList.add('required');
+                    englishNameItem.querySelector('.form-hint').style.display = 'none';
+                } else {
+                    // 非服务商：英文名称非必填
+                    englishNameItem.querySelector('.form-label').classList.remove('required');
+                    englishNameItem.querySelector('.form-hint').style.display = 'flex';
+                }
+            }
+
+            // 绑定业务类型复选框事件
+            businessTypeCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', checkBusinessType);
+            });
+
+            // 4. 信用代码类型验证
             const creditCodeType = document.getElementById('creditCodeType');
             const creditCode = document.getElementById('creditCode');
-            const creditCodeError = document.querySelector('#creditCode + .form-error');
             const creditCodeFormatError = document.getElementById('creditCodeFormatError');
 
+            creditCode.addEventListener('blur', function() {
+                creditCodeFormatError.classList.remove('show');
+                if (creditCodeType.value === '01' && this.value) {
+                    // 统一社会信用代码必须18位
+                    if (this.value.length !== 18) {
+                        creditCodeFormatError.classList.add('show');
+                        this.classList.add('error');
+                    } else {
+                        this.classList.remove('error');
+                    }
+                }
+            });
+
             creditCodeType.addEventListener('change', function() {
-                creditCode.value = '';
-                creditCode.placeholder = '请输入对应类型的信用代码';
-                creditCodeError.style.display = 'none';
-                creditCodeError.classList.remove('show');
-                creditCodeFormatError.style.display = 'none';
                 creditCodeFormatError.classList.remove('show');
                 creditCode.classList.remove('error');
-                
                 if (this.value === '01') {
-                    creditCode.placeholder = '统一社会信用代码为18位';
-                } else if (this.value === '02') {
-                    creditCode.placeholder = '身份证号码为18位';
+                    creditCode.placeholder = '请输入18位统一社会信用代码';
+                } else {
+                    creditCode.placeholder = '请输入对应类型的信用代码';
                 }
             });
 
-            // 6. 文件上传点击触发（通用）
-            document.querySelectorAll('.upload-area').forEach(area => {
-                const fileInput = area.querySelector('input[type="file"]');
-                if (fileInput) {
-                    area.addEventListener('click', function() {
-                        fileInput.click();
-                    });
+            // 5. 资质文件弹窗操作
+            const addQualificationBtn = document.getElementById('addQualificationBtn');
+            const qualificationModal = document.getElementById('qualificationModal');
+            const closeModal = document.getElementById('closeModal');
+            const cancelModalBtn = document.getElementById('cancelModalBtn');
+            const saveQualificationBtn = document.getElementById('saveQualificationBtn');
+            const editCardIndex = document.getElementById('editCardIndex');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalFileName = document.getElementById('modalFileName');
+            const modalFileInput = document.getElementById('modalFileInput');
+            const modalUploadDate = document.getElementById('modalUploadDate');
+            const modalExpireDate = document.getElementById('modalExpireDate');
+            const modalRemark = document.getElementById('modalRemark');
+            const existingFileName = document.getElementById('existingFileName');
+            const existingFileNameText = document.getElementById('existingFileNameText');
 
-                    // 文件选择后处理
-                    fileInput.addEventListener('change', function() {
-                        if (this.files.length > 0) {
-                            console.log('选择的文件：', this.files);
-                        }
-                    });
+            // 打开弹窗（新增）
+            addQualificationBtn.addEventListener('click', function() {
+                resetModalForm();
+                modalTitle.textContent = '上传资质文件';
+                editCardIndex.value = '-1';
+                qualificationModal.classList.add('show');
+                // 设置默认日期为今天
+                const today = new Date().toISOString().split('T')[0];
+                modalUploadDate.value = today;
+            });
+
+            // 关闭弹窗
+            function closeModalFunc() {
+                qualificationModal.classList.remove('show');
+                resetModalForm();
+            }
+
+            closeModal.addEventListener('click', closeModalFunc);
+            cancelModalBtn.addEventListener('click', closeModalFunc);
+
+            // 点击弹窗外层关闭
+            qualificationModal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModalFunc();
                 }
             });
 
-            // 7. 删除已上传文件
-            document.querySelectorAll('.upload-del button').forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    if (confirm('确定要删除该文件吗？')) {
-                        this.closest('.upload-item').remove();
-                    }
+            // 重置弹窗表单
+            function resetModalForm() {
+                modalFileName.value = '';
+                modalFileInput.value = '';
+                modalUploadDate.value = '';
+                modalExpireDate.value = '';
+                modalRemark.value = '';
+                existingFileName.style.display = 'none';
+                existingFileNameText.textContent = '';
+                
+                // 清除错误提示
+                document.querySelectorAll('#qualificationModal .form-error').forEach(error => {
+                    error.classList.remove('show');
                 });
+                
+                // 清除输入框错误样式
+                document.querySelectorAll('#qualificationModal .form-input').forEach(input => {
+                    input.classList.remove('error');
+                });
+            }
+
+            // 保存资质文件
+            saveQualificationBtn.addEventListener('click', function() {
+                let isValid = true;
+                
+                // 验证表单
+                if (!modalFileName.value.trim()) {
+                    showError(modalFileName, '文件名称不能为空');
+                    isValid = false;
+                }
+                
+                const isEditMode = editCardIndex.value !== '-1';
+                if (!isEditMode && !modalFileInput.files.length) {
+                    showError(modalFileInput, '请选择要上传的文件');
+                    isValid = false;
+                }
+                
+                if (!modalUploadDate.value) {
+                    showError(modalUploadDate, '上传日期不能为空');
+                    isValid = false;
+                }
+                
+                if (!modalExpireDate.value) {
+                    showError(modalExpireDate, '有效期至不能为空');
+                    isValid = false;
+                }
+                
+                if (!isValid) return;
+
+                // 构造文件数据
+                const fileData = {
+                    name: modalFileName.value.trim(),
+                    uploadDate: modalUploadDate.value,
+                    expireDate: modalExpireDate.value,
+                    remark: modalRemark.value.trim() || '',
+                    file: isEditMode ? qualificationFiles[editCardIndex.value].file : modalFileInput.files[0]
+                };
+
+                if (isEditMode) {
+                    // 修改模式
+                    qualificationFiles[editCardIndex.value] = fileData;
+                } else {
+                    // 新增模式
+                    qualificationFiles.push(fileData);
+                }
+
+                // 更新文件列表
+                renderQualificationList();
+                
+                // 关闭弹窗
+                closeModalFunc();
             });
 
-            // 8. 表单提交验证
+            // 渲染资质文件列表
+            function renderQualificationList() {
+                const qualificationList = document.getElementById('qualificationList');
+                const emptyQualification = document.getElementById('emptyQualification');
+                
+                // 清空列表（保留空状态提示）
+                qualificationList.innerHTML = '';
+                qualificationList.appendChild(emptyQualification);
+
+                if (qualificationFiles.length > 0) {
+                    // 有文件：隐藏空状态
+                    emptyQualification.style.display = 'none';
+                    
+                    // 渲染文件卡片
+                    qualificationFiles.forEach((file, index) => {
+                        const fileSize = file.file ? formatFileSize(file.file.size) : '未知';
+                        const fileType = file.file ? getFileTypeIcon(file.file.type) : '<i class="fa-solid fa-file"></i>';
+                        
+                        const card = document.createElement('div');
+                        card.className = 'qualification-card';
+                        card.innerHTML = `
+                            <div class="qualification-card-header">
+                                <h4 class="qualification-card-title">${file.name}</h4>
+                                <div class="qualification-card-actions">
+                                    <button type="button" class="form-btn form-btn-default form-btn-sm edit-btn" data-index="${index}">
+                                        <i class="fa-solid fa-edit"></i> 编辑
+                                    </button>
+                                    <button type="button" class="form-btn form-btn-default form-btn-sm delete-btn" data-index="${index}">
+                                        <i class="fa-solid fa-trash"></i> 删除
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="qualification-card-body">
+                                <div class="qualification-card-info">
+                                    <span class="qualification-card-label">文件类型</span>
+                                    <span class="qualification-card-value">${fileType}</span>
+                                </div>
+                                <div class="qualification-card-info">
+                                    <span class="qualification-card-label">文件大小</span>
+                                    <span class="qualification-card-value">${fileSize}</span>
+                                </div>
+                                <div class="qualification-card-info">
+                                    <span class="qualification-card-label">上传日期</span>
+                                    <span class="qualification-card-value">${file.uploadDate}</span>
+                                </div>
+                                <div class="qualification-card-info">
+                                    <span class="qualification-card-label">有效期至</span>
+                                    <span class="qualification-card-value">${file.expireDate}</span>
+                                </div>
+                                ${file.remark ? `
+                                <div class="qualification-card-info col-span-full">
+                                    <span class="qualification-card-label">备注说明</span>
+                                    <span class="qualification-card-value">${file.remark}</span>
+                                </div>
+                                ` : ''}
+                            </div>
+                        `;
+                        qualificationList.appendChild(card);
+                        
+                        // 绑定编辑按钮事件
+                        card.querySelector('.edit-btn').addEventListener('click', function() {
+                            const idx = this.getAttribute('data-index');
+                            editQualification(idx);
+                        });
+                        
+                        // 绑定删除按钮事件
+                        card.querySelector('.delete-btn').addEventListener('click', function() {
+                            const idx = this.getAttribute('data-index');
+                            if (confirm('确定要删除该资质文件吗？')) {
+                                qualificationFiles.splice(idx, 1);
+                                renderQualificationList();
+                            }
+                        });
+                    });
+                } else {
+                    // 无文件：显示空状态
+                    emptyQualification.style.display = 'block';
+                }
+            }
+
+            // 编辑资质文件
+            function editQualification(index) {
+                const file = qualificationFiles[index];
+                if (!file) return;
+                
+                // 填充表单
+                modalTitle.textContent = '修改资质文件';
+                editCardIndex.value = index;
+                modalFileName.value = file.name;
+                modalUploadDate.value = file.uploadDate;
+                modalExpireDate.value = file.expireDate;
+                modalRemark.value = file.remark;
+                
+                // 显示已上传的文件名
+                if (file.file) {
+                    existingFileName.style.display = 'block';
+                    existingFileNameText.textContent = file.file.name;
+                }
+                
+                // 打开弹窗
+                qualificationModal.classList.add('show');
+            }
+
+            // 6. 表单提交验证
             const supplierForm = document.getElementById('supplierForm');
-            
             supplierForm.addEventListener('submit', function(e) {
                 e.preventDefault();
-                let isValid = true;
-
-                // 重置所有错误状态
-                document.querySelectorAll('.form-error').forEach(el => {
-                    el.classList.remove('show');
-                    el.style.display = 'none';
-                });
-                document.querySelectorAll('.form-input, .form-select, .form-textarea').forEach(el => {
-                    el.classList.remove('error');
-                });
-
-                // 验证所有必填项
-                document.querySelectorAll('.form-label.required').forEach(label => {
-                    const formItem = label.closest('.form-item, .form-item-full');
-                    const input = formItem.querySelector('input, select, textarea');
-                    const errorText = formItem.querySelector('.form-error');
-
-                    if (!input.value.trim()) {
-                        isValid = false;
-                        input.classList.add('error');
-                        errorText.classList.add('show');
-                        errorText.style.display = 'flex';
-                    }
-
-                    // 特殊验证：信用代码格式
-                    if (input.id === 'creditCode' && creditCodeType.value === '01' && input.value.trim().length !== 18) {
-                        isValid = false;
-                        input.classList.add('error');
-                        creditCodeError.style.display = 'none';
-                        creditCodeError.classList.remove('show');
-                        creditCodeFormatError.style.display = 'flex';
-                        creditCodeFormatError.classList.add('show');
-                    }
-
-                    // 特殊验证：禁用说明
-                    if (riskLevelSelect.value === '2' && disableReasonItem.querySelector('input').value.trim() === '') {
-                        isValid = false;
-                        const disableInput = disableReasonItem.querySelector('input');
-                        const disableError = disableReasonItem.querySelector('.form-error');
-                        disableInput.classList.add('error');
-                        disableError.classList.add('show');
-                        disableError.style.display = 'flex';
-                    }
-
-                    // 特殊验证：英文名称（服务商必填）
-                    if (tradeTypeSelect.value === '服务' && englishNameItem.querySelector('input').value.trim() === '') {
-                        isValid = false;
-                        englishNameItem.querySelector('input').classList.add('error');
-                        englishNameError.classList.add('show');
-                        englishNameError.style.display = 'flex';
-                    }
-                });
-
-                // 验证业务类型至少选一个
-                const businessTypeChecked = Array.from(businessTypeCheckboxes).some(cb => cb.checked);
-                const businessTypeError = document.querySelector('.checkbox-group + .form-error');
                 
-                if (!businessTypeChecked) {
+                let isValid = true;
+                
+                // 验证必填项
+                document.querySelectorAll('.form-label.required').forEach(label => {
+                    const inputId = label.nextElementSibling.id;
+                    const input = document.getElementById(inputId);
+                    const error = input.nextElementSibling;
+                    
+                    if (input.type === 'checkbox') {
+                        // 复选框验证（业务类型）
+                        const checked = document.querySelector('.business-type:checked');
+                        if (!checked) {
+                            document.getElementById('businessTypeError').classList.add('show');
+                            isValid = false;
+                        } else {
+                            document.getElementById('businessTypeError').classList.remove('show');
+                        }
+                    } else if (!input.value.trim()) {
+                        // 普通输入框验证
+                        showError(input, error.textContent);
+                        isValid = false;
+                    } else {
+                        hideError(input);
+                    }
+                });
+
+                // 验证信用代码格式
+                if (creditCodeType.value === '01' && creditCode.value.length !== 18) {
+                    showError(creditCode, creditCodeFormatError.textContent);
                     isValid = false;
-                    businessTypeError.classList.add('show');
-                    businessTypeError.style.display = 'flex';
                 }
 
-                // 验证资质文件上传（必传）
-                const qualificationFiles = [
-                    document.getElementById('qualificationAuditFile'),
-                    document.getElementById('socialSecurityFile'),
-                    document.getElementById('paidCapitalFile'),
-                    document.getElementById('qualificationCertificateFile')
-                ];
-                
-                qualificationFiles.forEach(fileInput => {
-                    const errorText = fileInput.parentElement.nextElementSibling;
-                    if (fileInput.files.length === 0) {
-                        isValid = false;
-                        errorText.classList.add('show');
-                        errorText.style.display = 'flex';
-                    }
-                });
-
-                // 验证评定文件上传（根据业务类型数量验证）
-                const evaluationFileInputs = document.querySelectorAll('.evaluation-file-input');
-                evaluationFileInputs.forEach((fileInput, index) => {
-                    const errorText = fileInput.parentElement.nextElementSibling;
-                    if (fileInput.files.length === 0) {
-                        isValid = false;
-                        errorText.classList.add('show');
-                        errorText.style.display = 'flex';
-                    }
-                });
+                // 验证服务商英文名称
+                checkBusinessType();
+                const isServiceProvider = document.querySelector('.business-type[value="服务提供商"]:checked');
+                if (isServiceProvider && !englishNameInput.value.trim()) {
+                    showError(englishNameInput, englishNameError.textContent);
+                    isValid = false;
+                }
 
                 if (isValid) {
-                    // 验证通过，提交表单
-                    alert('表单验证通过，正在提交审核...');
-                    // 这里可添加AJAX提交逻辑
-                } else {
-                    // 滚动到第一个错误项
-                    const firstError = document.querySelector('.form-error.show') || document.querySelector('.form-error[style*="flex"]');
-                    if (firstError) {
-                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }
+                    // 表单验证通过，这里可以发送AJAX请求
+                    alert('表单验证通过，准备提交！');
+                    // 实际项目中这里可以写AJAX提交逻辑
                 }
             });
+
+            // 辅助函数：显示错误提示
+            function showError(input, message) {
+                input.classList.add('error');
+                let errorElement = input.nextElementSibling;
+                if (!errorElement || !errorElement.classList.contains('form-error')) {
+                    errorElement = input.parentElement.querySelector('.form-error');
+                }
+                errorElement.textContent = message;
+                errorElement.classList.add('show');
+            }
+
+            // 辅助函数：隐藏错误提示
+            function hideError(input) {
+                input.classList.remove('error');
+                let errorElement = input.nextElementSibling;
+                if (!errorElement || !errorElement.classList.contains('form-error')) {
+                    errorElement = input.parentElement.querySelector('.form-error');
+                }
+                errorElement.classList.remove('show');
+            }
+
+            // 辅助函数：格式化文件大小
+            function formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+
+            // 辅助函数：获取文件类型图标
+            function getFileTypeIcon(type) {
+                if (type.includes('pdf')) return '<i class="fa-solid fa-file-pdf text-red-500"></i> PDF';
+                if (type.includes('jpg') || type.includes('jpeg') || type.includes('png')) return '<i class="fa-solid fa-file-image text-green-500"></i> 图片';
+                return '<i class="fa-solid fa-file"></i> 其他';
+            }
         });
     </script>
 </body>
