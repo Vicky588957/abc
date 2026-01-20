@@ -137,7 +137,39 @@
     </style>
 </head>
 <body class="page-container">
-   
+    <!-- 顶部导航 -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between max-w-7xl">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-building-columns text-primary text-xl"></i>
+                <h1 class="text-lg font-semibold">供应商管理系统</h1>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="relative hidden md:block">
+                    <input type="text" placeholder="全局搜索..." class="pl-8 pr-4 py-1.5 rounded border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm w-48">
+                    <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                </div>
+                <div class="flex items-center gap-2">
+                    <img src="https://picsum.photos/32/32" alt="用户头像" class="w-8 h-8 rounded-full object-cover">
+                    <span class="text-sm">系统管理员</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 面包屑 -->
+    <div class="container mx-auto px-4 py-3 max-w-7xl">
+        <nav class="flex text-sm text-gray-400" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                <li><a href="#" class="hover:text-primary">首页</a></li>
+                <li><i class="fa-solid fa-chevron-right mx-2 text-xs"></i></li>
+                <li><a href="#" class="hover:text-primary">供应商管理</a></li>
+                <li><i class="fa-solid fa-chevron-right mx-2 text-xs"></i></li>
+                <li class="text-gray-600 font-medium">新增供应商</li>
+            </ol>
+        </nav>
+    </div>
+
     <!-- 主内容区 -->
     <main class="content-wrapper">
         <div class="form-card">
@@ -425,7 +457,7 @@
                     
                     <!-- 业务类型说明迁移到这里 -->
                     <div id="businessTypeTips" class="business-type-tips">
-                        <div id="tipsContent">请根据选择的业务类型上传对应的资质文件,重复文件上传一个即可：<br>
+                        <div id="tipsContent">请根据选择的业务类型上传对应的资质文件：<br>
                             <strong>服务提供商：</strong>资质审核文件（营业执照等经营许可证明）、纳税社保证明（三月内任一纳税和社保证明）<br>
                             <strong>分包方：</strong>资质审核文件（营业执照等经营许可证明）、纳税社保证明（三月内任一纳税和社保证明）、实缴资本证明（工商登记或天眼查或股东资金转入公账凭证）、资质证书文件（CIA8、法定、CI、劳务派遣经营许可证等）<br>
                             <strong>物资供应商：</strong>资质审核文件（营业执照等经营许可证明）、纳税社保证明（三月内任一纳税和社保证明）
@@ -589,7 +621,11 @@
                         <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>有效期至不能为空</div>
                     </div>
                 </div>
-            
+                <div class="mb-4">
+                    <label class="form-label">备注说明</label>
+                    <textarea class="form-textarea" id="modalRemark" rows="2" placeholder="请输入文件备注说明（选填）"></textarea>
+                </div>
+            </div>
             <div class="modal-footer">
                 <button type="button" class="form-btn form-btn-default" id="cancelModalBtn">
                     <i class="fa-solid fa-times"></i> 取消
