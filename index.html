@@ -42,7 +42,7 @@
             
             /* 页面布局 */
             .page-container { @apply min-h-screen bg-gray-50 font-sans text-gray-600; }
-            .content-wrapper { @apply container mx-auto px-4 py-6 max-w-7xl; }
+            .content-wrapper { @apply container mx-auto px-4 py-6 max-w-7xl relative; } /* 新增：relative */
 
             /* 表单卡片 */
             .form-card { @apply bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden; }
@@ -50,7 +50,7 @@
             .form-header-title { @apply text-lg font-semibold text-gray-600; }
 
             /* 表单分组 */
-            .form-group { @apply mb-8 px-6; }
+            .form-group { @apply mb-8 px-6 scroll-mt-20; } /* 新增：scroll-mt-20 优化滚动定位 */
             .form-group-title { @apply text-base font-medium text-gray-600 mb-4 flex items-center gap-2; }
             .form-group-title i { @apply text-primary; }
 
@@ -133,10 +133,85 @@
             
             /* 资质文件上传提示样式 */
             .qualification-upload-tips { @apply bg-primary/5 p-3 rounded-md text-sm text-gray-700 mb-4; }
+
+            /* ========== 新增：右侧锚点导航样式 ========== */
+            .anchor-nav {
+                @apply fixed right-4 top-1/2 -translate-y-1/2 bg-white rounded-lg shadow-md border border-gray-200 p-3 z-40 hidden lg:block;
+                width: 220px;
+                max-height: calc(100vh - 40px);
+                overflow-y: auto;
+            }
+            .anchor-nav-title {
+                @apply text-sm font-semibold text-gray-700 mb-3 pb-2 border-b border-gray-100 flex items-center justify-between;
+            }
+            .anchor-nav-progress {
+                @apply text-xs text-primary font-medium;
+            }
+            .anchor-nav-list {
+                @apply space-y-1;
+            }
+            .anchor-nav-item {
+                @apply flex items-center justify-between py-1.5 px-2 rounded text-sm cursor-pointer transition-all hover:bg-primary/5;
+            }
+            .anchor-nav-item.active {
+                @apply bg-primary/10 text-primary font-medium;
+            }
+            .anchor-nav-item-label {
+                @apply flex-1 truncate;
+            }
+            .anchor-nav-item-status {
+                @apply w-2 h-2 rounded-full ml-2;
+            }
+            .status-empty { @apply bg-gray-300; } /* 未开始 */
+            .status-part { @apply bg-warning; }    /* 部分完成 */
+            .status-complete { @apply bg-success; } /* 已完成 */
         }
     </style>
 </head>
 <body class="page-container">
+    <!-- 顶部导航 -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between max-w-7xl">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-building-columns text-primary text-xl"></i>
+                <h1 class="text-lg font-semibold">供应商管理系统</h1>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="relative hidden md:block">
+                    <input type="text" placeholder="全局搜索..." class="pl-8 pr-4 py-1.5 rounded border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm w-48">
+                    <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                </div>
+                <div class="flex items-center gap-2">
+                    <img src="https://picsum.photos/32/32" alt="用户头像" class="w-8 h-8 rounded-full object-cover">
+                    <span class="text-sm">系统管理员</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 面包屑 -->
+    <div class="container mx-auto px-4 py-3 max-w-7xl">
+        <nav class="flex text-sm text-gray-400" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                <li><a href="#" class="hover:text-primary">首页</a></li>
+                <li><i class="fa-solid fa-chevron-right mx-2 text-xs"></i></li>
+                <li><a href="#" class="hover:text-primary">供应商管理</a></li>
+                <li><i class="fa-solid fa-chevron-right mx-2 text-xs"></i></li>
+                <li class="text-gray-600 font-medium">新增供应商</li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- ========== 新增：右侧锚点导航 ========== -->
+    <div class="anchor-nav" id="anchorNav">
+        <div class="anchor-nav-title">
+            <span>表单导航</span>
+            <span class="anchor-nav-progress" id="formProgress">0%</span>
+        </div>
+        <div class="anchor-nav-list" id="anchorNavList">
+            <!-- 由JS动态生成 -->
+        </div>
+    </div>
 
     <!-- 主内容区 -->
     <main class="content-wrapper">
@@ -149,7 +224,7 @@
             <!-- 表单主体 -->
             <form id="supplierForm">
                 <!-- 基础信息组 -->
-                <div class="form-group" style="padding-top: 24px;">
+                <div class="form-group" id="group-basic"> <!-- 新增：id标识 -->
                     <div class="form-group-title">
                         <i class="fa-solid fa-id-card"></i>
                         基础信息
@@ -312,7 +387,7 @@
                 </div>
 
                 <!-- 国家名称模块 -->
-                <div class="form-group">
+                <div class="form-group" id="group-region"> <!-- 新增：id标识 -->
                     <div class="form-group-title">
                         <i class="fa-solid fa-globe"></i>
                         国家/地区信息
@@ -383,7 +458,7 @@
                 </div>
 
                 <!-- 供应商业务类型 -->
-                <div class="form-group">
+                <div class="form-group" id="group-business-type"> <!-- 新增：id标识 -->
                     <div class="form-group-title">
                         <i class="fa-solid fa-briefcase"></i>
                         供应商业务类型
@@ -411,7 +486,7 @@
                 </div>
 
                 <!-- 资质文件上传模块（核心改造） -->
-                <div class="form-group" id="fileUploadGroup">
+                <div class="form-group" id="group-files"> <!-- 新增：id标识 -->
                     <div class="form-group-title flex justify-between items-center">
                         <div class="flex items-center gap-2">
                             <i class="fa-solid fa-file-upload"></i>
@@ -443,7 +518,7 @@
                 </div>
 
                 <!-- 地址信息 -->
-                <div class="form-group">
+                <div class="form-group" id="group-address"> <!-- 新增：id标识 -->
                     <div class="form-group-title">
                         <i class="fa-solid fa-map-marker-alt"></i>
                         地址信息
@@ -507,7 +582,7 @@
                 </div>
 
                 <!-- 经营范围 -->
-                <div class="form-group">
+                <div class="form-group" id="group-scope"> <!-- 新增：id标识 -->
                     <div class="form-group-title">
                         <i class="fa-solid fa-list-alt"></i>
                         经营范围
@@ -521,7 +596,7 @@
                 </div>
 
                 <!-- 简化供应商合格评定信息为单个文本框，改为非必填 -->
-                <div class="form-group">
+                <div class="form-group" id="group-assessment"> <!-- 新增：id标识 -->
                     <div class="form-group-title">
                         <i class="fa-solid fa-check-double"></i>
                         供应商合格评定信息
@@ -628,8 +703,34 @@
         // 存储资质文件数据
         let qualificationFiles = [];
 
+        // ========== 新增：锚点导航相关配置 ==========
+        const formModules = [
+            { id: 'group-basic', name: '基础信息' },
+            { id: 'group-region', name: '国家/地区信息' },
+            { id: 'group-business-type', name: '供应商业务类型' },
+            { id: 'group-files', name: '资质文件上传' },
+            { id: 'group-address', name: '地址信息' },
+            { id: 'group-scope', name: '经营范围' },
+            { id: 'group-assessment', name: '供应商合格评定信息' }
+        ];
+
         // DOM加载完成后执行
         document.addEventListener('DOMContentLoaded', function() {
+            // ========== 新增：初始化锚点导航 ==========
+            initAnchorNav();
+            
+            // ========== 新增：监听滚动事件 ==========
+            window.addEventListener('scroll', function() {
+                updateActiveAnchor();
+                updateFormProgress();
+            });
+            
+            // ========== 新增：监听表单输入事件 ==========
+            document.querySelectorAll('.form-input, .form-select, .form-textarea, .business-type').forEach(input => {
+                input.addEventListener('input', updateFormProgress);
+                input.addEventListener('change', updateFormProgress);
+            });
+
             // 1. 省市区联动
             const provinceSelect = document.getElementById('province');
             const citySelect = document.getElementById('city');
@@ -651,6 +752,7 @@
                         citySelect.appendChild(option);
                     });
                 }
+                updateFormProgress(); // 新增：更新进度
             });
 
             // 市变化事件
@@ -670,6 +772,7 @@
                         districtSelect.appendChild(option);
                     });
                 }
+                updateFormProgress(); // 新增：更新进度
             });
 
             // 2. 区域类型切换（国内/国外）
@@ -690,6 +793,7 @@
                     registerAddressItem.style.display = 'block';
                     registerAddressEnItem.style.display = 'none';
                 }
+                updateFormProgress(); // 新增：更新进度
             });
 
             // 3. 业务类型选择影响英文名称必填性
@@ -715,6 +819,7 @@
                     englishNameItem.querySelector('.form-label').classList.remove('required');
                     englishNameItem.querySelector('.form-hint').style.display = 'flex';
                 }
+                updateFormProgress(); // 新增：更新进度
             }
 
             // 绑定业务类型复选框事件
@@ -738,6 +843,7 @@
                         this.classList.remove('error');
                     }
                 }
+                updateFormProgress(); // 新增：更新进度
             });
 
             creditCodeType.addEventListener('change', function() {
@@ -748,6 +854,7 @@
                 } else {
                     creditCode.placeholder = '请输入对应类型的信用代码';
                 }
+                updateFormProgress(); // 新增：更新进度
             });
 
             // 5. 资质文件弹窗操作
@@ -861,6 +968,7 @@
 
                 // 更新文件列表
                 renderQualificationList();
+                updateFormProgress(); // 新增：更新进度
                 
                 // 关闭弹窗
                 closeModalFunc();
@@ -937,6 +1045,7 @@
                             if (confirm('确定要删除该资质文件吗？')) {
                                 qualificationFiles.splice(idx, 1);
                                 renderQualificationList();
+                                updateFormProgress(); // 新增：更新进度
                             }
                         });
                     });
@@ -1056,6 +1165,173 @@
                 if (type.includes('pdf')) return '<i class="fa-solid fa-file-pdf text-red-500"></i> PDF';
                 if (type.includes('jpg') || type.includes('jpeg') || type.includes('png')) return '<i class="fa-solid fa-file-image text-green-500"></i> 图片';
                 return '<i class="fa-solid fa-file"></i> 其他';
+            }
+
+            // ========== 新增：锚点导航相关函数 ==========
+            
+            /**
+             * 初始化锚点导航
+             */
+            function initAnchorNav() {
+                const anchorNavList = document.getElementById('anchorNavList');
+                anchorNavList.innerHTML = '';
+                
+                formModules.forEach(module => {
+                    const item = document.createElement('div');
+                    item.className = 'anchor-nav-item';
+                    item.setAttribute('data-target', module.id);
+                    item.innerHTML = `
+                        <span class="anchor-nav-item-label">${module.name}</span>
+                        <span class="anchor-nav-item-status status-empty"></span>
+                    `;
+                    
+                    // 点击锚点平滑滚动到对应模块
+                    item.addEventListener('click', function() {
+                        const target = document.getElementById(module.id);
+                        if (target) {
+                            target.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+                    });
+                    
+                    anchorNavList.appendChild(item);
+                });
+                
+                // 初始化进度
+                updateFormProgress();
+                updateActiveAnchor();
+            }
+            
+            /**
+             * 更新当前激活的锚点
+             */
+            function updateActiveAnchor() {
+                const scrollPosition = window.scrollY + 100; // 偏移量，提前激活
+                
+                // 移除所有激活状态
+                document.querySelectorAll('.anchor-nav-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // 找到当前可视区域的模块
+                for (let i = formModules.length - 1; i >= 0; i--) {
+                    const module = document.getElementById(formModules[i].id);
+                    if (module && module.offsetTop <= scrollPosition) {
+                        // 激活对应锚点
+                        document.querySelector(`.anchor-nav-item[data-target="${formModules[i].id}"]`).classList.add('active');
+                        break;
+                    }
+                }
+            }
+            
+            /**
+             * 更新表单填写进度和模块状态
+             */
+            function updateFormProgress() {
+                let totalRequired = 0; // 总必填项数
+                let completedRequired = 0; // 已完成必填项数
+                
+                // 遍历所有模块更新状态
+                formModules.forEach(module => {
+                    const moduleElement = document.getElementById(module.id);
+                    if (!moduleElement) return;
+                    
+                    // 获取模块内的必填项
+                    const requiredInputs = moduleElement.querySelectorAll('.form-label.required + input, .form-label.required + select, .form-label.required + textarea');
+                    const moduleRequiredCount = requiredInputs.length;
+                    let moduleCompletedCount = 0;
+                    
+                    // 特殊处理：业务类型复选框
+                    if (module.id === 'group-business-type') {
+                        const checked = document.querySelector('.business-type:checked');
+                        if (checked) {
+                            moduleCompletedCount = 1;
+                        }
+                        totalRequired += 1;
+                    }
+                    
+                    // 特殊处理：资质文件上传（有文件即完成）
+                    else if (module.id === 'group-files') {
+                        if (qualificationFiles.length > 0) {
+                            moduleCompletedCount = 1;
+                        }
+                        totalRequired += 1;
+                    }
+                    
+                    // 特殊处理：国外地址
+                    else if (module.id === 'group-address') {
+                        const regionType = document.getElementById('regionType').value;
+                        if (regionType === 'foreign') {
+                            // 国外：检查英文地址
+                            const enAddress = document.getElementById('registerAddressEn').value.trim();
+                            if (enAddress) {
+                                moduleCompletedCount += 1;
+                            }
+                            totalRequired += 1;
+                        } else {
+                            // 国内：检查省市区和地址
+                            const province = document.getElementById('province').value.trim();
+                            const city = document.getElementById('city').value.trim();
+                            const district = document.getElementById('district').value.trim();
+                            const address = document.getElementById('registerAddress').value.trim();
+                            
+                            if (province) moduleCompletedCount += 1;
+                            if (city) moduleCompletedCount += 1;
+                            if (district) moduleCompletedCount += 1;
+                            if (address) moduleCompletedCount += 1;
+                            
+                            totalRequired += 4;
+                        }
+                    }
+                    
+                    // 普通必填项
+                    else {
+                        requiredInputs.forEach(input => {
+                            totalRequired += 1;
+                            
+                            // 特殊处理：服务商英文名称
+                            if (input.id === 'supplierEnglishName') {
+                                const isServiceProvider = document.querySelector('.business-type[value="服务提供商"]:checked');
+                                if (!isServiceProvider || (isServiceProvider && input.value.trim())) {
+                                    completedRequired += 1;
+                                    moduleCompletedCount += 1;
+                                }
+                            } 
+                            // 普通输入框
+                            else if (input.value.trim()) {
+                                completedRequired += 1;
+                                moduleCompletedCount += 1;
+                            }
+                        });
+                    }
+                    
+                    // 更新模块状态
+                    const statusElement = document.querySelector(`.anchor-nav-item[data-target="${module.id}"] .anchor-nav-item-status`);
+                    if (statusElement) {
+                        // 清除所有状态类
+                        statusElement.classList.remove('status-empty', 'status-part', 'status-complete');
+                        
+                        if (moduleRequiredCount === 0 && module.id !== 'group-files' && module.id !== 'group-business-type') {
+                            // 无必填项的模块
+                            statusElement.classList.add('status-complete');
+                        } else if (moduleCompletedCount === 0) {
+                            // 未开始
+                            statusElement.classList.add('status-empty');
+                        } else if (moduleCompletedCount === (moduleRequiredCount || 1)) {
+                            // 已完成
+                            statusElement.classList.add('status-complete');
+                        } else {
+                            // 部分完成
+                            statusElement.classList.add('status-part');
+                        }
+                    }
+                });
+                
+                // 计算总体进度
+                const progress = totalRequired > 0 ? Math.round((completedRequired / totalRequired) * 100) : 0;
+                document.getElementById('formProgress').textContent = `${progress}%`;
             }
         });
     </script>
