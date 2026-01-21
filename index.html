@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>新增供应商 - 供应商管理系统</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script>
         tailwind.config = {
@@ -36,36 +34,29 @@
     </script>
     <style type="text/tailwindcss">
         @layer utilities {
-            /* 基础样式 */
             .badge { @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium; }
             .badge-required { @apply bg-danger/10 text-danger; }
             
-            /* 页面布局 */
             .page-container { @apply min-h-screen bg-gray-50 font-sans text-gray-600; }
-            .content-wrapper { @apply container mx-auto px-4 py-6 max-w-7xl relative; } /* 新增：relative */
+            .content-wrapper { @apply container mx-auto px-4 py-6 max-w-7xl relative; }
 
-            /* 表单卡片 */
             .form-card { @apply bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden; }
             .form-header { @apply px-6 py-4 border-b border-gray-200 flex items-center justify-between bg-gray-50; }
             .form-header-title { @apply text-lg font-semibold text-gray-600; }
 
-            /* 表单分组 - 关键修改：基础信息模块padding-top:24px */
             .form-group { @apply mb-8 px-6 scroll-mt-20; } 
-            #group-basic { @apply pt-6; } /* pt-6 对应24px，设置基础信息模块顶部内边距 */
+            #group-basic { @apply pt-6; }
             .form-group-title { @apply text-base font-medium text-gray-600 mb-4 flex items-center gap-2; }
             .form-group-title i { @apply text-primary; }
 
-            /* 表单布局 */
             .form-grid { @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6; }
             .form-item { @apply col-span-1; }
             .form-item-full { @apply col-span-1 md:col-span-2 lg:col-span-3; }
             .form-item-row { @apply col-span-1 md:col-span-2 lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-6; }
             
-            /* 行内表单布局 - 自适应宽度 */
             .inline-form-row { @apply flex flex-wrap gap-4 w-full; }
             .inline-form-item { @apply flex-1 min-w-[200px]; }
             
-            /* 表单元素 */
             .form-label { @apply block text-sm font-medium text-gray-700 mb-1 flex items-center; }
             .form-label.required::after { content: '*'; @apply text-danger ml-1; }
             .form-input, .form-select, .form-textarea { @apply w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all; }
@@ -74,37 +65,32 @@
             .form-error.show { @apply flex; }
             .form-hint { @apply text-gray-400 text-xs mt-1 flex items-center gap-1; }
 
-            /* 按钮样式 */
             .form-btn { @apply px-6 py-2 rounded-md text-sm font-medium transition-all flex items-center gap-2; }
             .form-btn-primary { @apply bg-primary text-white hover:bg-primary/90; }
-            .form-btn-primary i { @apply text-white; } /* 新增：主按钮图标白色 */
+            .form-btn-primary i { @apply text-white; }
             .form-btn-default { @apply bg-white border border-gray-200 text-gray-600 hover:bg-gray-50; }
             .form-btn-sm { @apply px-3 py-1.5 text-xs; }
             .form-actions { @apply px-6 py-4 border-t border-gray-200 flex justify-end gap-3 bg-gray-50; }
 
-            /* 复选框组 */
             .checkbox-group { @apply flex flex-wrap gap-4 mt-2 mb-1; }
             .checkbox-item { @apply flex items-center gap-2; }
             .checkbox-input { @apply w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary/20 cursor-pointer; }
             .checkbox-label { @apply text-sm text-gray-600 cursor-pointer; }
 
-            /* 文件上传样式 */
             .upload-btn { @apply form-btn form-btn-default form-btn-sm py-1.5 px-4; }
             .upload-list { @apply mt-3; }
             .upload-item { @apply flex items-center gap-3 p-3 border border-gray-200 rounded mb-2; }
             .upload-icon { @apply text-xl text-primary; }
             .upload-info { @apply flex-1; }
             .upload-name { @apply text-sm font-medium; }
-            .upload-meta { @apply text-xs text-gray-400; } /* 新增：文件元信息样式 */
+            .upload-meta { @apply text-xs text-gray-400; }
             .upload-del { @apply text-gray-400 hover:text-danger text-sm p-1 rounded-full hover:bg-danger/5; }
             
-            /* 资质文件卡片样式（重新设计） */
             .qualification-card { @apply border border-gray-200 rounded-md p-4 mb-4 hover:shadow-sm transition-shadow w-full; }
             .qualification-card-header { @apply flex justify-between items-center mb-4; }
             .qualification-card-title { @apply font-medium text-gray-700 text-base; }
             .qualification-card-actions { @apply flex gap-2; }
             
-            /* 资质文件子项样式（重新设计，防止布局错乱） */
             .qualification-subitem { @apply border-t border-gray-100 pt-4 mt-4 first:border-t-0 first:pt-0 first:mt-0; }
             .qualification-subitem-title { @apply text-sm font-medium text-gray-700 mb-3; }
             .qualification-upload-row { @apply flex items-center gap-3 w-full flex-wrap; }
@@ -112,11 +98,9 @@
             .qualification-file-info { @apply flex-1 min-w-[200px]; }
             .upload-del-wrapper { @apply flex-shrink-0; }
             
-            /* 有效期区间样式 */
             .date-range-wrapper { @apply flex gap-3 w-full; }
             .date-range-item { @apply flex-1; }
             
-            /* 加载状态样式 */
             .loading { @apply relative pointer-events-none; }
             .loading::before {
                 content: '';
@@ -127,7 +111,6 @@
                 @apply w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin;
             }
             
-            /* 弹窗样式 */
             .modal-overlay { @apply fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden; }
             .modal-overlay.show { @apply flex; }
             .modal-container { @apply bg-white rounded-lg shadow-lg w-full max-w-lg mx-4; }
@@ -137,103 +120,78 @@
             .modal-body { @apply px-6 py-4; }
             .modal-footer { @apply px-6 py-4 border-t border-gray-200 flex justify-end gap-3; }
             
-            /* 表单导航样式 - 修复版 */
             .anchor-nav {
                 @apply fixed right-4 lg:right-12 top-[148px] bg-white rounded-lg shadow-md border border-gray-200 p-3 z-40 hidden lg:block;
                 width: 220px;
                 max-height: calc(100vh - 180px);
                 overflow-y: auto;
-                /* 修复滚动条样式 */
                 scrollbar-width: thin;
                 scrollbar-color: #C9CDD4 #F2F3F5;
             }
-            /* 自定义滚动条 */
-            .anchor-nav::-webkit-scrollbar {
-                @apply w-1.5;
-            }
-            .anchor-nav::-webkit-scrollbar-track {
-                @apply bg-gray-100 rounded-full;
-            }
-            .anchor-nav::-webkit-scrollbar-thumb {
-                @apply bg-gray-300 rounded-full hover:bg-gray-400;
-            }
-            .anchor-nav-title {
-                @apply text-sm font-semibold text-gray-700 mb-3 pb-2 border-b border-gray-100 flex items-center justify-between;
-            }
-            .anchor-nav-progress {
-                @apply text-xs text-primary font-medium;
-            }
-            .anchor-nav-list {
-                @apply space-y-1;
-            }
-            .anchor-nav-item {
-                @apply flex items-center justify-between py-1.5 px-2 rounded text-sm cursor-pointer transition-all hover:bg-primary/5;
-            }
-            .anchor-nav-item.active {
-                @apply bg-primary/10 text-primary font-medium;
-            }
-            .anchor-nav-item-label {
-                @apply flex-1 truncate;
-            }
-            .anchor-nav-item-status {
-                @apply w-2 h-2 rounded-full ml-2;
-            }
-            .status-empty { @apply bg-gray-300; } /* 未开始 */
-            .status-part { @apply bg-warning; }    /* 部分完成 */
-            .status-complete { @apply bg-success; } /* 已完成 */
+            .anchor-nav::-webkit-scrollbar { @apply w-1.5; }
+            .anchor-nav::-webkit-scrollbar-track { @apply bg-gray-100 rounded-full; }
+            .anchor-nav::-webkit-scrollbar-thumb { @apply bg-gray-300 rounded-full hover:bg-gray-400; }
+            .anchor-nav-title { @apply text-sm font-semibold text-gray-700 mb-3 pb-2 border-b border-gray-100 flex items-center justify-between; }
+            .anchor-nav-progress { @apply text-xs text-primary font-medium; }
+            .anchor-nav-list { @apply space-y-1; }
+            .anchor-nav-item { @apply flex items-center justify-between py-1.5 px-2 rounded text-sm cursor-pointer transition-all hover:bg-primary/5; }
+            .anchor-nav-item.active { @apply bg-primary/10 text-primary font-medium; }
+            .anchor-nav-item-label { @apply flex-1 truncate; }
+            .anchor-nav-item-status { @apply w-2 h-2 rounded-full ml-2; }
+            .status-empty { @apply bg-gray-300; }
+            .status-part { @apply bg-warning; }
+            .status-complete { @apply bg-success; }
+            
+            .file-detail-item { @apply border border-gray-200 rounded-md p-3 mb-3; }
+            .file-detail-header { @apply flex justify-between items-center mb-2; }
+            .file-detail-title { @apply font-medium text-sm flex items-center gap-1; }
+            .file-required-tag { @apply text-xs bg-danger/10 text-danger px-1.5 py-0.5 rounded; }
+            .file-detail-form { @apply grid grid-cols-1 md:grid-cols-3 gap-3; }
+            .file-name-input { @apply md:col-span-1; }
+            .file-date-range { @apply md:col-span-2 grid grid-cols-2 gap-3; }
+            .add-file-btn { @apply mt-3 text-primary hover:text-primary/80 text-sm flex items-center gap-1 cursor-pointer; }
+            .section-required-hint { @apply text-danger text-xs mt-2 flex items-center gap-1; }
         }
     </style>
 </head>
 <body class="page-container">
- 
-    <!-- 右侧锚点导航 -->
     <div class="anchor-nav" id="anchorNav">
         <div class="anchor-nav-title">
             <span>表单导航</span>
             <span class="anchor-nav-progress" id="formProgress">0%</span>
         </div>
-        <div class="anchor-nav-list" id="anchorNavList">
-            <!-- 由JS动态生成 -->
-        </div>
+        <div class="anchor-nav-list" id="anchorNavList"></div>
     </div>
 
-    <!-- 主内容区 -->
     <main class="content-wrapper">
         <div class="form-card">
-            <!-- 表单头部 -->
             <div class="form-header">
                 <h2 class="form-header-title">新增供应商</h2>
             </div>
 
-            <!-- 表单主体 -->
             <form id="supplierForm">
                 <!-- 基础信息组 -->
                 <div class="form-group" id="group-basic">
                     <div class="form-group-title">
-                        <i class="fa-solid fa-id-card"></i>
-                        基础信息
+                        <i class="fa-solid fa-id-card"></i>基础信息
                     </div>
                     <div class="form-grid">
-                        <!-- 供应商名称 -->
                         <div class="form-item">
                             <label class="form-label required">供应商名称</label>
                             <input type="text" class="form-input" id="supplierName" placeholder="请输入供应商全称">
                             <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>供应商名称不能为空</div>
                         </div>
-                        <!-- 供应商简称 -->
                         <div class="form-item">
                             <label class="form-label required">供应商简称</label>
                             <input type="text" class="form-input" id="supplierShortName" placeholder="请输入供应商简称">
                             <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>供应商简称不能为空</div>
                         </div>
-                        <!-- 供应商名称（英文） -->
                         <div class="form-item" id="englishNameItem">
                             <label class="form-label">供应商名称（英文）</label>
                             <input type="text" class="form-input" id="supplierEnglishName" placeholder="供应商类型为服务商时必填">
                             <div class="form-hint"><i class="fa-solid fa-circle-info"></i>仅服务商类型必填</div>
                             <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>供应商英文名称不能为空</div>
                         </div>
-                        <!-- 供应商归属类型 -->
                         <div class="form-item">
                             <label class="form-label required">供应商归属类型</label>
                             <select class="form-select" id="supplierBelongType">
@@ -243,7 +201,6 @@
                             </select>
                             <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>供应商归属类型不能为空</div>
                         </div>
-                        <!-- 供应商交易类型 -->
                         <div class="form-item">
                             <label class="form-label required">供应商交易类型</label>
                             <select class="form-select" id="supplierTradeType">
@@ -253,7 +210,6 @@
                             </select>
                             <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>供应商交易类型不能为空</div>
                         </div>
-                        <!-- 外付类型 -->
                         <div class="form-item">
                             <label class="form-label required">外付类型</label>
                             <select class="form-select" id="paymentType">
@@ -265,7 +221,7 @@
                             </select>
                             <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>外付类型不能为空</div>
                         </div>
-                        <!-- 供应商分类 -->
+                        <!-- 新增字段 -->
                         <div class="form-item">
                             <label class="form-label required">供应商分类</label>
                             <select class="form-select" id="supplierCategory">
@@ -285,7 +241,6 @@
                             </select>
                             <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>供应商分类不能为空</div>
                         </div>
-                        <!-- 信用代码类型 -->
                         <div class="form-item">
                             <label class="form-label required">信用代码类型</label>
                             <select class="form-select" id="creditCodeType">
@@ -299,26 +254,22 @@
                             </select>
                             <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>信用代码类型不能为空</div>
                         </div>
-                        <!-- 信用代码 -->
                         <div class="form-item">
                             <label class="form-label required">信用代码</label>
                             <input type="text" class="form-input" id="creditCode" placeholder="请输入对应类型的信用代码">
                             <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>信用代码不能为空</div>
                             <div class="form-error" id="creditCodeFormatError"><i class="fa-solid fa-circle-exclamation"></i>统一社会信用代码必须为18位</div>
                         </div>
-                        <!-- 法定代表人 -->
                         <div class="form-item">
                             <label class="form-label required">法定代表人</label>
                             <input type="text" class="form-input" id="legalPerson" placeholder="请输入法定代表人姓名">
                             <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>法定代表人不能为空</div>
                         </div>
-                        <!-- 注册资本 -->
                         <div class="form-item">
                             <label class="form-label required">注册资本（万元）</label>
                             <input type="number" class="form-input" id="registeredCapital" placeholder="请输入注册资本金额" min="0" step="0.01">
                             <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>注册资本不能为空</div>
                         </div>
-                        <!-- 注册币种 -->
                         <div class="form-item">
                             <label class="form-label required">注册币种</label>
                             <select class="form-select" id="registeredCurrency">
@@ -331,19 +282,16 @@
                             </select>
                             <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>注册币种不能为空</div>
                         </div>
-                        <!-- 注册成立单位 -->
                         <div class="form-item">
                             <label class="form-label required">注册成立单位</label>
                             <input type="text" class="form-input" id="registeredUnit" placeholder="请输入批准成立的主管单位">
                             <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>注册成立单位不能为空</div>
                         </div>
-                        <!-- 成立时间 -->
                         <div class="form-item">
                             <label class="form-label required">成立时间</label>
                             <input type="date" class="form-input" id="establishmentDate">
                             <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>成立时间不能为空</div>
                         </div>
-                        <!-- 供应商有效期 -->
                         <div class="form-item">
                             <label class="form-label required">供应商有效期</label>
                             <select class="form-select" id="validityPeriod">
@@ -351,11 +299,9 @@
                                 <option value="1">1年</option>
                                 <option value="2">2年</option>
                                 <option value="3">3年</option>
-                        
                             </select>
                             <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>供应商有效期不能为空</div>
                         </div>
-                        <!-- 风险等级字段 -->
                         <div class="form-item">
                             <label class="form-label required">风险等级</label>
                             <select class="form-select" id="riskLevel">
@@ -373,8 +319,7 @@
                 <!-- 国家名称模块 -->
                 <div class="form-group" id="group-region">
                     <div class="form-group-title">
-                        <i class="fa-solid fa-globe"></i>
-                        国家/地区信息
+                        <i class="fa-solid fa-globe"></i>国家/地区信息
                     </div>
                     <div class="form-grid">
                         <div class="form-item-full">
@@ -444,8 +389,7 @@
                 <!-- 供应商业务类型 -->
                 <div class="form-group" id="group-business-type">
                     <div class="form-group-title">
-                        <i class="fa-solid fa-briefcase"></i>
-                        供应商业务类型
+                        <i class="fa-solid fa-briefcase"></i>供应商业务类型
                     </div>
                     <div class="form-item-full">
                         <label class="form-label required">业务类型（可多选）</label>
@@ -467,16 +411,12 @@
                     </div>
                 </div>
 
-                <!-- 资质文件上传模块（重新设计） -->
+                <!-- 资质文件上传模块 -->
                 <div class="form-group" id="group-files">
                     <div class="form-group-title">
-                        <i class="fa-solid fa-file-upload"></i>
-                        资质文件上传
+                        <i class="fa-solid fa-file-upload"></i>资质文件上传
                     </div>
-                    
-                    <!-- 资质文件列表容器（卡片式展示） -->
                     <div id="qualificationList" class="mt-4">
-                        <!-- 初始无文件状态 -->
                         <div id="emptyQualification" class="text-center py-8 text-gray-400">
                             <i class="fa-solid fa-file-alt text-4xl mb-2"></i>
                             <p>暂无上传的资质文件，请先选择业务类型</p>
@@ -487,8 +427,7 @@
                 <!-- 地址信息 -->
                 <div class="form-group" id="group-address">
                     <div class="form-group-title">
-                        <i class="fa-solid fa-map-marker-alt"></i>
-                        地址信息
+                        <i class="fa-solid fa-map-marker-alt"></i>地址信息
                     </div>
                     <div class="form-grid">
                         <!-- 省市区（仅国内显示） -->
@@ -545,8 +484,7 @@
                 <!-- 新增：经营范围模块（选填） -->
                 <div class="form-group" id="group-business-scope">
                     <div class="form-group-title">
-                        <i class="fa-solid fa-list-check"></i>
-                        经营范围
+                        <i class="fa-solid fa-list-check"></i>经营范围
                     </div>
                     <div class="form-grid">
                         <div class="form-item-full">
@@ -560,10 +498,9 @@
                 <!-- 新增：供应商合格评定信息模块（选填） -->
                 <div class="form-group" id="group-evaluation">
                     <div class="form-group-title">
-                        <i class="fa-solid fa-clipboard-check"></i>
-                        供应商合格评定信息
+                        <i class="fa-solid fa-clipboard-check"></i>供应商合格评定信息
                     </div>
-                    
+                    <div class="form-grid">
                         <div class="form-item-full">
                             <label class="form-label">评定备注</label>
                             <textarea class="form-textarea" id="evaluationRemark" rows="3" placeholder="请输入评定相关备注信息（选填）"></textarea>
@@ -587,7 +524,7 @@
         </div>
     </main>
 
-    <!-- 资质文件上传弹窗（重新设计，支持时间区间选择） -->
+    <!-- 资质文件上传弹窗 -->
     <div class="modal-overlay" id="qualificationModal">
         <div class="modal-container">
             <div class="modal-header">
@@ -595,429 +532,840 @@
                 <i class="fa-solid fa-xmark modal-close" id="modalClose"></i>
             </div>
             <div class="modal-body">
-                <!-- 隐藏的文件类型标识 -->
                 <input type="hidden" id="uploadFileType" value="">
+                <input type="hidden" id="uploadFileSubType" value="">
+                <input type="hidden" id="isCustomFile" value="false">
+                <input type="hidden" id="currentSectionIndex" value="">
+                <input type="hidden" id="isDateRequired" value="false">
+                <input type="hidden" id="sectionRequired" value="false">
+                
+                <div class="form-item">
+                    <label class="form-label required">文件名称</label>
+                    <input type="text" class="form-input" id="fileNameInput" placeholder="请输入文件名称">
+                    <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>文件名称不能为空</div>
+                </div>
                 
                 <div class="form-item">
                     <label class="form-label required">上传文件</label>
                     <input type="file" class="form-input" id="fileUpload" accept=".pdf,.jpg,.jpeg,.png">
                     <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>请选择要上传的文件</div>
-                    <div class="form-hint"><i class="fa-solid fa-circle-info"></i>支持PDF、JPG、PNG格式，单个文件不超过10MB</div>
                 </div>
-                
-                <!-- 有效期时间区间（重新设计） -->
-                <div class="form-item" id="dateRangeWrapper" style="display: none;">
-                    <label class="form-label required">有效期区间</label>
+
+                <div class="form-item mt-4" id="dateRangeWrapper">
+                    <label class="form-label" id="dateRangeLabel">有效期区间</label>
                     <div class="date-range-wrapper">
                         <div class="date-range-item">
-                            <label class="form-label">开始日期</label>
-                            <input type="date" class="form-input" id="startDate">
+                            <label class="form-label" id="startDateLabel">开始日期</label>
+                            <input type="date" class="form-input" id="validStartDate">
                             <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>开始日期不能为空</div>
                         </div>
                         <div class="date-range-item">
-                            <label class="form-label">结束日期</label>
-                            <input type="date" class="form-input" id="endDate">
+                            <label class="form-label" id="endDateLabel">结束日期</label>
+                            <input type="date" class="form-input" id="validEndDate">
                             <div class="form-error"><i class="fa-solid fa-circle-exclamation"></i>结束日期不能为空</div>
                         </div>
                     </div>
-                    <div class="form-error" id="dateRangeError" style="display: none;"><i class="fa-solid fa-circle-exclamation"></i>结束日期不能早于开始日期</div>
+                    <div class="form-hint"><i class="fa-solid fa-circle-info"></i>可选，不填写则表示长期有效</div>
                 </div>
-                
-                <div class="form-item">
-                    <label class="form-label">备注说明</label>
-                    <textarea class="form-textarea" id="fileRemark" rows="3" placeholder="请输入文件备注信息（选填）"></textarea>
+
+                <div class="form-item mt-4">
+                    <label class="form-label">备注</label>
+                    <textarea class="form-textarea" id="fileRemark" rows="2" placeholder="请输入文件备注（选填）"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="form-btn form-btn-default" id="cancelUpload">取消</button>
-                <button type="button" class="form-btn form-btn-primary" id="confirmUpload">确认上传</button>
+                <button type="button" class="form-btn form-btn-default" id="modalCancel">取消</button>
+                <button type="button" class="form-btn form-btn-primary" id="modalConfirm">确认上传</button>
             </div>
         </div>
     </div>
 
     <script>
-        // 页面加载完成后执行
         document.addEventListener('DOMContentLoaded', function() {
-            // 1. 定义所有业务类型对应的资质卡片配置
-            const qualificationCardConfigs = {
-                // 服务提供商卡片配置
-                '服务提供商': [
-                    {
-                        id: 'card-license',
-                        title: '资质审核文件（请上传营业执照、经营许可证明等）',
-                        subItems: [
-                            { id: 'sub-license', name: '营业执照', hasDateRange: true },
-                            { id: 'sub-permit', name: '经营许可证明', hasDateRange: false }
-                        ]
-                    },
-                    {
-                        id: 'card-tax',
-                        title: '纳税社保证明（请上传三月内任一纳税和社保证明）',
-                        subItems: [
-                            { id: 'sub-tax', name: '纳税证明', hasDateRange: false },
-                            { id: 'sub-social', name: '社保证明', hasDateRange: false }
-                        ]
-                    }
-                ],
-                // 分包方卡片配置
-                '分包方': [
-                    {
-                        id: 'card-license', // 复用ID，避免重复显示
-                        title: '资质审核文件（请上传营业执照、经营许可证明等）',
-                        subItems: [
-                            { id: 'sub-license', name: '营业执照', hasDateRange: true },
-                            { id: 'sub-permit', name: '经营许可证明', hasDateRange: false }
-                        ]
-                    },
-                    {
-                        id: 'card-tax', // 复用ID，避免重复显示
-                        title: '纳税社保证明（请上传三月内任一纳税和社保证明）',
-                        subItems: [
-                            { id: 'sub-tax', name: '纳税证明', hasDateRange: false },
-                            { id: 'sub-social', name: '社保证明', hasDateRange: false }
-                        ]
-                    },
-                    {
-                        id: 'card-capital',
-                        title: '实缴资本证明（请上传工商登记或天眼查或股东资金转入公账凭证）',
-                        subItems: [
-                            { id: 'sub-capital-1', name: '工商登记', hasDateRange: false },
-                            { id: 'sub-capital-2', name: '天眼查', hasDateRange: false },
-                            { id: 'sub-capital-3', name: '股东资金转入公账凭证', hasDateRange: false }
-                        ]
-                    },
-                    {
-                        id: 'card-cert',
-                        title: '资质证书文件（请上传CNAS认可、CMA计量资质认定、CATL资质认定、CPSC授权认可等）',
-                        subItems: [
-                            { id: 'sub-cert-1', name: 'CNAS认可', hasDateRange: true },
-                            { id: 'sub-cert-2', name: 'CMA计量资质认定', hasDateRange: true },
-                            { id: 'sub-cert-3', name: 'CATL资质认定', hasDateRange: true },
-                            { id: 'sub-cert-4', name: 'CPSC授权认可', hasDateRange: true }
-                        ]
-                    }
-                ]
-            };
+            initAnchorNav();
+            initFormValidation();
+            initBusinessTypeLinkage();
+            initModalEvents();
+            initFormSubmit();
+            initEnglishNameLogic();
+            initRegionTypeLinkage(); // 新增
+            initProvinceCityDistrictLinkage(); // 新增
+        });
 
-            // 2. 监听业务类型选择变化
+        // 锚点导航初始化
+        function initAnchorNav() {
+            const formGroups = document.querySelectorAll('.form-group');
+            const anchorNavList = document.getElementById('anchorNavList');
+            const formProgress = document.getElementById('formProgress');
+            
+            anchorNavList.innerHTML = '';
+            formGroups.forEach(group => {
+                const groupId = group.id;
+                const groupTitle = group.querySelector('.form-group-title').textContent.trim();
+                const navItem = document.createElement('div');
+                navItem.className = 'anchor-nav-item';
+                navItem.dataset.target = groupId;
+                navItem.innerHTML = `
+                    <span class="anchor-nav-item-label">${groupTitle}</span>
+                    <span class="anchor-nav-item-status status-empty"></span>
+                `;
+                navItem.addEventListener('click', () => {
+                    document.getElementById(groupId).scrollIntoView({ behavior: 'smooth' });
+                });
+                anchorNavList.appendChild(navItem);
+            });
+
+            window.addEventListener('scroll', updateAnchorNav);
+            setTimeout(updateAnchorNav, 100);
+
+            function updateAnchorNav() {
+                const scrollTop = window.scrollY;
+                const docHeight = document.body.scrollHeight - window.innerHeight;
+                const progress = Math.round((scrollTop / docHeight) * 100);
+                formProgress.textContent = `${progress}%`;
+
+                formGroups.forEach((group, index) => {
+                    const groupRect = group.getBoundingClientRect();
+                    const navItems = anchorNavList.querySelectorAll('.anchor-nav-item');
+                    const navItem = navItems[index];
+                    const statusDot = navItem.querySelector('.anchor-nav-item-status');
+
+                    if (groupRect.top <= 100 && groupRect.bottom >= 100) {
+                        navItems.forEach(item => item.classList.remove('active'));
+                        navItem.classList.add('active');
+                    }
+
+                    const inputs = group.querySelectorAll('.form-input, .form-select, .form-textarea');
+                    let filledCount = 0;
+                    inputs.forEach(input => input.value.trim() && filledCount++);
+                    
+                    if (filledCount === 0) statusDot.className = 'anchor-nav-item-status status-empty';
+                    else if (filledCount < inputs.length) statusDot.className = 'anchor-nav-item-status status-part';
+                    else statusDot.className = 'anchor-nav-item-status status-complete';
+                });
+            }
+        }
+
+        // 表单验证
+        function initFormValidation() {
+            const formInputs = document.querySelectorAll('.form-input, .form-select, .form-textarea');
+            formInputs.forEach(input => {
+                input.addEventListener('blur', () => validateFormItem(input));
+                input.addEventListener('input', () => {
+                    input.classList.remove('error');
+                    input.parentElement.querySelectorAll('.form-error').forEach(el => el.classList.remove('show'));
+                });
+            });
+
+            // 单独验证信用代码格式
+            const creditCodeInput = document.getElementById('creditCode');
+            const creditCodeTypeSelect = document.getElementById('creditCodeType');
+            creditCodeInput.addEventListener('blur', function() {
+                validateFormItem(this);
+                // 如果是统一社会信用代码，验证18位
+                if (creditCodeTypeSelect.value === '01' && this.value.trim() !== '') {
+                    const formatError = document.getElementById('creditCodeFormatError');
+                    if (this.value.length !== 18) {
+                        this.classList.add('error');
+                        formatError.classList.add('show');
+                    } else {
+                        formatError.classList.remove('show');
+                    }
+                }
+            });
+
+            function validateFormItem(input) {
+                const value = input.value.trim();
+                const isRequired = input.closest('.form-item').querySelector('.form-label.required') !== null;
+                const errorEls = input.parentElement.querySelectorAll('.form-error');
+
+                input.classList.remove('error');
+                errorEls.forEach(el => el.classList.remove('show'));
+
+                if (isRequired && value === '') {
+                    input.classList.add('error');
+                    input.parentElement.querySelector('.form-error')?.classList.add('show');
+                    return false;
+                }
+
+                // 数字验证（注册资本）
+                if (input.id === 'registeredCapital' && value !== '' && (isNaN(value) || parseFloat(value) < 0)) {
+                    input.classList.add('error');
+                    const errorEl = input.parentElement.querySelector('.form-error');
+                    if (errorEl) {
+                        errorEl.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i>注册资本必须为非负数';
+                        errorEl.classList.add('show');
+                    }
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
+        // 核心修复：业务类型与资质文件联动
+        function initBusinessTypeLinkage() {
             const businessTypeCheckboxes = document.querySelectorAll('.business-type');
             const qualificationList = document.getElementById('qualificationList');
             const emptyQualification = document.getElementById('emptyQualification');
-
-            // 业务类型选择变化处理函数
-            function handleBusinessTypeChange() {
-                // 获取所有选中的业务类型
-                const selectedTypes = Array.from(businessTypeCheckboxes)
-                    .filter(checkbox => checkbox.checked)
-                    .map(checkbox => checkbox.value);
-
-                if (selectedTypes.length === 0) {
-                    // 未选择任何业务类型：清空所有卡片，显示空状态
-                    clearAllQualificationCards();
-                    emptyQualification.style.display = 'block';
-                    return;
-                }
-
-                // 隐藏空状态
-                emptyQualification.style.display = 'none';
-
-                // 收集所有需要显示的卡片配置（去重）
-                const cardsToShow = {};
-                selectedTypes.forEach(type => {
-                    if (qualificationCardConfigs[type]) {
-                        qualificationCardConfigs[type].forEach(cardConfig => {
-                            // 用卡片ID作为key，自动去重
-                            cardsToShow[cardConfig.id] = cardConfig;
-                        });
-                    }
-                });
-
-                // 先移除已存在但不需要显示的卡片
-                document.querySelectorAll('.qualification-card').forEach(card => {
-                    if (!cardsToShow[card.id]) {
-                        card.remove();
-                    }
-                });
-
-                // 创建或更新需要显示的卡片
-                Object.values(cardsToShow).forEach(cardConfig => {
-                    if (!document.getElementById(cardConfig.id)) {
-                        createQualificationCard(cardConfig);
-                    }
-                });
-            }
-
-            // 清空所有资质卡片
-            function clearAllQualificationCards() {
-                document.querySelectorAll('.qualification-card').forEach(card => {
-                    card.remove();
-                });
-            }
-
-            // 创建资质文件卡片
-            function createQualificationCard(cardConfig) {
-                const card = document.createElement('div');
-                card.id = cardConfig.id;
-                card.className = 'qualification-card';
-                
-                // 卡片头部
-                let cardHTML = `
-                    <div class="qualification-card-header">
-                        <h4 class="qualification-card-title">${cardConfig.title}</h4>
-                        <div class="qualification-card-actions">
-                            <button type="button" class="form-btn form-btn-primary form-btn-sm add-file-btn">
-                                <i class="fa-solid fa-plus"></i> 添加文件
-                            </button>
-                        </div>
-                    </div>
-                `;
-                
-                // 添加子上传项
-                cardConfig.subItems.forEach(subItem => {
-                    cardHTML += `
-                        <div class="qualification-subitem" id="${subItem.id}">
-                            <div class="qualification-subitem-title">${subItem.name}</div>
-                            <div class="qualification-upload-row">
-                                <div class="upload-btn-wrapper">
-                                    <button type="button" class="form-btn form-btn-default form-btn-sm upload-btn upload-subitem-btn" 
-                                            data-subitem="${subItem.id}" 
-                                            data-name="${subItem.name}" 
-                                            data-daterange="${subItem.hasDateRange}">
-                                        <i class="fa-solid fa-upload"></i> 上传文件
-                                    </button>
-                                </div>
-                                <div class="qualification-file-info">
-                                    <div class="upload-name text-gray-400">未上传</div>
-                                    <div class="upload-meta text-xs text-gray-400">--</div> <!-- 修改：使用新的类名 -->
-                                </div>
-                                <div class="upload-del-wrapper">
-                                    <button type="button" class="form-btn form-btn-default form-btn-sm upload-del" style="display:none">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-                
-                card.innerHTML = cardHTML;
-                
-                // 将卡片添加到列表中
-                qualificationList.appendChild(card);
-                
-                // 为上传按钮添加事件监听
-                card.querySelectorAll('.upload-subitem-btn').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const subItemId = this.dataset.subitem;
-                        const subItemName = this.dataset.name;
-                        const hasDateRange = this.dataset.daterange === 'true';
-                        
-                        // 设置弹窗标题和参数
-                        document.getElementById('modalTitle').textContent = `上传${subItemName}`;
-                        document.getElementById('uploadFileType').value = subItemId;
-                        
-                        // 显示/隐藏有效期区间字段
-                        const dateRangeWrapper = document.getElementById('dateRangeWrapper');
-                        if (hasDateRange) {
-                            dateRangeWrapper.style.display = 'block';
-                        } else {
-                            dateRangeWrapper.style.display = 'none';
-                        }
-                        
-                        // 打开弹窗
-                        document.getElementById('qualificationModal').classList.add('show');
-                    });
-                });
-                
-                // 为添加文件按钮添加事件监听
-                card.querySelector('.add-file-btn').addEventListener('click', function() {
-                    document.getElementById('modalTitle').textContent = '添加其他文件';
-                    document.getElementById('uploadFileType').value = 'other';
-                    document.getElementById('dateRangeWrapper').style.display = 'none';
-                    document.getElementById('qualificationModal').classList.add('show');
-                });
-            }
-
-            // 为每个业务类型复选框添加监听
-            businessTypeCheckboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', handleBusinessTypeChange);
-            });
-
-            // 3. 资质文件上传弹窗相关逻辑
-            const qualificationModal = document.getElementById('qualificationModal');
-            const modalClose = document.getElementById('modalClose');
-            const cancelUpload = document.getElementById('cancelUpload');
-            const confirmUpload = document.getElementById('confirmUpload');
-            const startDateInput = document.getElementById('startDate');
-            const endDateInput = document.getElementById('endDate');
-            const dateRangeError = document.getElementById('dateRangeError');
-
-            // 关闭弹窗
-            function closeModal() {
-                qualificationModal.classList.remove('show');
-                // 清空表单
-                document.getElementById('fileUpload').value = '';
-                document.getElementById('fileRemark').value = '';
-                document.getElementById('startDate').value = '';
-                document.getElementById('endDate').value = '';
-                document.getElementById('uploadFileType').value = '';
-                document.getElementById('dateRangeWrapper').style.display = 'none';
-                dateRangeError.style.display = 'none';
-            }
-
-            modalClose.addEventListener('click', closeModal);
-            cancelUpload.addEventListener('click', closeModal);
-
-            // 点击弹窗外层关闭
-            qualificationModal.addEventListener('click', function(e) {
-                if (e.target === qualificationModal) {
-                    closeModal();
-                }
-            });
-
-            // 验证日期区间
-            function validateDateRange() {
-                const startDate = startDateInput.value;
-                const endDate = endDateInput.value;
-                
-                if (startDate && endDate) {
-                    if (new Date(endDate) < new Date(startDate)) {
-                        dateRangeError.style.display = 'flex';
-                        return false;
-                    } else {
-                        dateRangeError.style.display = 'none';
-                        return true;
-                    }
-                }
-                return true;
-            }
-
-            // 监听日期变化
-            startDateInput.addEventListener('change', validateDateRange);
-            endDateInput.addEventListener('change', validateDateRange);
-
-            // 确认上传
-            confirmUpload.addEventListener('click', function() {
-                // 获取上传参数
-                const fileType = document.getElementById('uploadFileType').value;
-                const fileUpload = document.getElementById('fileUpload').files[0];
-                const hasDateRange = fileType.includes('sub-license') || fileType.startsWith('sub-cert-');
-                const startDate = document.getElementById('startDate').value;
-                const endDate = document.getElementById('endDate').value;
-                
-                // 验证文件选择
-                if (!fileUpload) {
-                    alert('请选择要上传的文件');
-                    return;
-                }
-                
-                // 验证日期区间（如果需要）
-                if (hasDateRange) {
-                    if (!startDate) {
-                        alert('请选择开始日期');
-                        return;
-                    }
-                    if (!endDate) {
-                        alert('请选择结束日期');
-                        return;
-                    }
-                    if (!validateDateRange()) {
-                        alert('结束日期不能早于开始日期');
-                        return;
-                    }
-                }
-
-                // 模拟上传成功
-                alert('文件上传成功！');
-                
-                // 更新对应文件信息
-                const subItemElement = document.getElementById(fileType);
-                if (subItemElement) {
-                    const fileInfo = subItemElement.querySelector('.qualification-file-info');
-                    const delBtn = subItemElement.querySelector('.upload-del');
-                    
-                    // 更新文件信息
-                    const now = new Date();
-                    const formattedUploadTime = `${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-                    
-                    // 文件名称和上传时间
-                    fileInfo.querySelector('.upload-name').textContent = `${fileUpload.name}`;
-                    fileInfo.querySelector('.upload-name').className = 'upload-name';
-                    
-                    // 构建元信息（文件大小 + 上传日期 + 有效期）
-                    let metaInfo = `文件大小：${formatFileSize(fileUpload.size)} | 上传日期：${formattedUploadTime}`;
-                    
-                    // 如果有有效期，添加有效期信息
-                    if (hasDateRange && startDate && endDate) {
-                        // 格式化有效期日期
-                        const formattedStartDate = startDate.replace(/-/g, '/');
-                        const formattedEndDate = endDate.replace(/-/g, '/');
-                        metaInfo += ` | 有效期：${formattedStartDate} 至 ${formattedEndDate}`;
-                    }
-                    
-                    // 更新元信息
-                    fileInfo.querySelector('.upload-meta').textContent = metaInfo;
-                    
-                    // 显示删除按钮
-                    delBtn.style.display = 'block';
-                    
-                    // 删除按钮事件
-                    delBtn.addEventListener('click', function() {
-                        // 重置文件信息
-                        fileInfo.querySelector('.upload-name').textContent = '未上传';
-                        fileInfo.querySelector('.upload-name').className = 'upload-name text-gray-400';
-                        fileInfo.querySelector('.upload-meta').textContent = '--';
-                        
-                        // 隐藏删除按钮
-                        this.style.display = 'none';
-                    });
-                }
-                
-                closeModal();
-            });
-
-            // 格式化文件大小
-            function formatFileSize(bytes) {
-                if (bytes === 0) return '0 B';
-                const k = 1024;
-                const sizes = ['B', 'KB', 'MB', 'GB'];
-                const i = Math.floor(Math.log(bytes) / Math.log(k));
-                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-            }
-
-            // 4. 省市区联动示例
-            const provinceSelect = document.getElementById('province');
-            const citySelect = document.getElementById('city');
-            const districtSelect = document.getElementById('district');
-
-            // 模拟省市区数据
-            const regionData = {
-                '北京市': {
-                    '北京市': ['东城区', '西城区', '朝阳区', '海淀区', '丰台区']
+            
+            // 定义资质文件配置（同步原始配置，实缴资本证明 dateRequired 为 false）
+            const qualificationConfig = {
+                '资质审核文件': {
+                    title: '资质审核文件（请上传营业执照、经营许可证明）',
+                    providerFiles: [
+                        { name: '营业执照', required: true, dateRequired: true, id: 'provider-license' },
+                        { name: '经营许可证明', required: false, dateRequired: true, id: 'provider-permit' }
+                    ],
+                    subcontractorFiles: [
+                        { name: '营业执照', required: true, dateRequired: false, id: 'subcontract-license' },
+                        { name: '经营许可证明', required: false, dateRequired: false, id: 'subcontract-permit' }
+                    ],
+                    hasAddBtn: true
                 },
-                '上海市': {
-                    '上海市': ['黄浦区', '徐汇区', '长宁区', '静安区', '普陀区']
+                '纳税社保证明': {
+                    title: '纳税社保证明（请上传三月内任一纳税和社保证明）',
+                    providerFiles: [
+                        { name: '社保证明', required: true, dateRequired: true, id: 'provider-social' },
+                        { name: '纳税证明', required: false, dateRequired: true, id: 'provider-tax' }
+                    ],
+                    subcontractorFiles: [
+                        { name: '社保证明', required: true, dateRequired: false, id: 'subcontract-social' },
+                        { name: '纳税证明', required: false, dateRequired: false, id: 'subcontract-tax' }
+                    ],
+                    hasAddBtn: true
                 },
-                '广东省': {
-                    '广州市': ['天河区', '越秀区', '海珠区', '荔湾区', '白云区'],
-                    '深圳市': ['福田区', '南山区', '宝安区', '龙岗区', '罗湖区']
+                '实缴资本证明': {
+                    title: '实缴资本证明（工商登记或天眼查或股东资金转入公账凭证）',
+                    onlySubcontractor: true,
+                    hasAddBtn: true,
+                    sectionRequired: true,
+                    dateRequired: false  // 保持非必填配置
                 },
-                '江苏省': {
-                    '南京市': ['玄武区', '秦淮区', '鼓楼区', '建邺区', '栖霞区'],
-                    '苏州市': ['姑苏区', '吴中区', '相城区', '虎丘区', '吴江区']
+                '资质证书文件': {
+                    title: '资质证书文件（CNAS认可、CMA计量资质认定、CATL资质认定、CPSC授权认可）',
+                    onlySubcontractor: true,
+                    hasAddBtn: true,
+                    sectionRequired: true,
+                    dateRequired: true
+                },
+                '物资供应商资质文件': {
+                    title: '物资供应商必备文件',
+                    onlyMaterialSupplier: true,
+                    files: [
+                        { name: '营业执照', required: true, dateRequired: false, id: 'material-license' },
+                        { name: '法定计量检定机构证书', required: false, dateRequired: false, id: 'measurement-cert' },
+                        { name: '质量认证证书', required: false, dateRequired: false, id: 'quality-cert' }
+                    ],
+                    hasAddBtn: true
                 }
             };
 
-            // 省份变化监听
+            businessTypeCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateQualificationFiles);
+            });
+
+            // 修复核心：根据选中类型渲染对应模块，重复模块只渲染一次
+            function updateQualificationFiles() {
+                const checkedTypes = Array.from(businessTypeCheckboxes)
+                    .filter(checkbox => checkbox.checked)
+                    .map(checkbox => checkbox.value);
+
+                if (checkedTypes.length === 0) {
+                    qualificationList.innerHTML = '';
+                    qualificationList.appendChild(emptyQualification);
+                    emptyQualification.style.display = 'block';
+                } else {
+                    emptyQualification.style.display = 'none';
+                    qualificationList.innerHTML = '';
+
+                    // 遍历配置，按规则渲染
+                    Object.keys(qualificationConfig).forEach(key => {
+                        const config = qualificationConfig[key];
+                        const isProvider = checkedTypes.includes('服务提供商');
+                        const isSubcontractor = checkedTypes.includes('分包方');
+                        const isMaterialSupplier = checkedTypes.includes('物资供应商');
+
+                        // 判断是否需要渲染当前模块
+                        let shouldRender = false;
+                        let fileList = [];
+                        let sectionType = '';
+
+                        if (config.onlySubcontractor) {
+                            shouldRender = isSubcontractor;
+                            sectionType = 'subcontractor';
+                        } else if (config.onlyMaterialSupplier) {
+                            shouldRender = isMaterialSupplier;
+                            sectionType = 'material-supplier';
+                            fileList = config.files || [];
+                        } else {
+                            shouldRender = isProvider || isSubcontractor;
+                            // 优先用服务商配置，分包商覆盖（保证重复模块只显示一次）
+                            if (isProvider) {
+                                fileList = config.providerFiles || [];
+                                sectionType = 'service-provider';
+                            }
+                            if (isSubcontractor) {
+                                fileList = config.subcontractorFiles || [];
+                                sectionType = 'subcontractor';
+                            }
+                        }
+
+                        if (shouldRender) {
+                            const section = createQualificationSection(
+                                config.title,
+                                fileList,
+                                sectionType,
+                                key,
+                                config.sectionRequired || false,
+                                config.dateRequired || false,
+                                config.hasAddBtn || false
+                            );
+                            qualificationList.appendChild(section);
+                        }
+                    });
+                }
+
+                // 业务类型验证
+                const businessTypeError = document.getElementById('businessTypeError');
+                checkedTypes.length === 0 
+                    ? businessTypeError.classList.add('show') 
+                    : businessTypeError.classList.remove('show');
+            }
+
+            // 创建资质文件模块（移除刷新按钮）
+            function createQualificationSection(title, files, type, sectionKey, sectionRequired, dateRequired, hasAddBtn) {
+                const section = document.createElement('div');
+                section.className = 'qualification-card';
+                section.dataset.sectionKey = sectionKey;
+                section.dataset.sectionRequired = sectionRequired;
+
+                let html = `
+                    <div class="qualification-card-header">
+                        <h4 class="qualification-card-title">${title}</h4>
+                    </div>
+                    <div class="qualification-card-body">
+                        <div id="section-${sectionKey}" class="file-sections-container">
+                `;
+
+                // 添加预设文件项
+                files.forEach(file => {
+                    html += `
+                        <div class="file-detail-item" id="file-item-${file.id}">
+                            <div class="file-detail-header">
+                                <div class="file-detail-title">
+                                    ${file.name}
+                                    ${file.required ? '<span class="file-required-tag">必传</span>' : ''}
+                                </div>
+                                <button class="upload-btn"
+                                        data-file-type="${type}"
+                                        data-file-subtype="${file.id}"
+                                        data-file-name="${file.name}"
+                                        data-section-key="${sectionKey}"
+                                        data-date-required="${file.dateRequired || dateRequired}"
+                                        data-section-required="${sectionRequired}">
+                                    <i class="fa-solid fa-upload"></i> 上传
+                                </button>
+                            </div>
+                            <div class="file-detail-info" id="file-info-${file.id}">
+                                <div class="text-gray-400 text-sm">未上传文件</div>
+                            </div>
+                            <button class="upload-del hidden mt-2" data-file-id="${file.id}">
+                                <i class="fa-solid fa-trash"></i> 删除
+                            </button>
+                        </div>
+                    `;
+                });
+
+                // 添加自定义文件按钮
+                if (hasAddBtn) {
+                    html += `
+                        <div class="add-file-btn"
+                             data-section-key="${sectionKey}"
+                             data-business-type="${type}"
+                             data-date-required="${dateRequired}"
+                             data-section-required="${sectionRequired}">
+                            <i class="fa-solid fa-plus"></i> 添加其他文件
+                        </div>
+                    `;
+                }
+
+                // 章节必填提示
+                if (sectionRequired) {
+                    html += `
+                        <div class="section-required-hint">
+                            <i class="fa-solid fa-circle-exclamation"></i> 本章节必须上传至少一个文件
+                        </div>
+                    `;
+                }
+
+                html += `
+                        </div>
+                    </div>
+                `;
+                section.innerHTML = html;
+
+                // 绑定上传按钮事件
+                section.querySelectorAll('.upload-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const params = this.dataset;
+                        openUploadModal(
+                            params.fileType,
+                            params.fileSubtype,
+                            params.fileName,
+                            false,
+                            params.sectionKey,
+                            params.dateRequired === 'true',
+                            params.sectionRequired === 'true'
+                        );
+                    });
+                });
+
+                // 绑定删除按钮事件
+                section.querySelectorAll('.upload-del').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const fileId = this.dataset.fileId;
+                        const fileInfoEl = document.getElementById(`file-info-${fileId}`);
+                        fileInfoEl.innerHTML = '<div class="text-gray-400 text-sm">未上传文件</div>';
+                        this.classList.add('hidden');
+                        checkSectionRequired(section);
+                    });
+                });
+
+                // 绑定添加文件按钮事件
+                section.querySelectorAll('.add-file-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const params = this.dataset;
+                        const customFileId = `custom-${Date.now()}`;
+                        this.dataset.customFileId = customFileId;
+                        openUploadModal(
+                            params.businessType,
+                            customFileId,
+                            '自定义文件',
+                            true,
+                            params.sectionKey,
+                            params.dateRequired === 'true',
+                            params.sectionRequired === 'true'
+                        );
+                    });
+                });
+
+                return section;
+            }
+
+            // 检查章节是否满足必填要求
+            function checkSectionRequired(section) {
+                const sectionRequired = section.dataset.sectionRequired === 'true';
+                if (!sectionRequired) return;
+
+                const fileItems = section.querySelectorAll('.file-detail-item');
+                let hasUploaded = false;
+                fileItems.forEach(item => {
+                    const infoEl = item.querySelector('.file-detail-info');
+                    if (!infoEl.textContent.includes('未上传文件')) hasUploaded = true;
+                });
+
+                console.log(`章节 ${section.dataset.sectionKey} 必填验证：${hasUploaded ? '通过' : '未通过'}`);
+            }
+        }
+
+        // 上传弹窗事件（保持原始逻辑）
+        function initModalEvents() {
+            const modal = document.getElementById('qualificationModal');
+            const modalClose = document.getElementById('modalClose');
+            const modalCancel = document.getElementById('modalCancel');
+            const modalConfirm = document.getElementById('modalConfirm');
+            const dateRangeLabel = document.getElementById('dateRangeLabel');
+            const startDateLabel = document.getElementById('startDateLabel');
+            const endDateLabel = document.getElementById('endDateLabel');
+
+            function closeModal() {
+                modal.classList.remove('show');
+                document.getElementById('fileNameInput').value = '';
+                document.getElementById('fileUpload').value = '';
+                document.getElementById('validStartDate').value = '';
+                document.getElementById('validEndDate').value = '';
+                document.getElementById('fileRemark').value = '';
+                dateRangeLabel.classList.remove('required');
+                startDateLabel.classList.remove('required');
+                endDateLabel.classList.remove('required');
+                modal.querySelectorAll('.form-input').forEach(input => {
+                    input.classList.remove('error');
+                    input.parentElement.querySelectorAll('.form-error').forEach(el => el.classList.remove('show'));
+                });
+            }
+
+            window.openUploadModal = function(fileType, fileSubType, fileName, isCustom, sectionKey, isDateRequired, sectionRequired) {
+                document.getElementById('modalTitle').textContent = `上传${fileName}`;
+                document.getElementById('uploadFileType').value = fileType;
+                document.getElementById('uploadFileSubType').value = fileSubType;
+                document.getElementById('fileNameInput').value = fileName;
+                document.getElementById('isCustomFile').value = isCustom ? 'true' : 'false';
+                document.getElementById('currentSectionIndex').value = sectionKey;
+                document.getElementById('isDateRequired').value = isDateRequired;
+                document.getElementById('sectionRequired').value = sectionRequired;
+
+                // 根据规则设置日期是否必填
+                if (isDateRequired) {
+                    dateRangeLabel.classList.add('required');
+                    startDateLabel.classList.add('required');
+                    endDateLabel.classList.add('required');
+                } else {
+                    dateRangeLabel.classList.remove('required');
+                    startDateLabel.classList.remove('required');
+                    endDateLabel.classList.remove('required');
+                }
+
+                modal.classList.add('show');
+            };
+
+            modalClose.addEventListener('click', closeModal);
+            modalCancel.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => e.target === modal && closeModal());
+
+            modalConfirm.addEventListener('click', function() {
+                const fileType = document.getElementById('uploadFileType').value;
+                const fileSubType = document.getElementById('uploadFileSubType').value;
+                const fileName = document.getElementById('fileNameInput').value.trim();
+                const fileInput = document.getElementById('fileUpload');
+                const startDate = document.getElementById('validStartDate').value;
+                const endDate = document.getElementById('validEndDate').value;
+                const isCustom = document.getElementById('isCustomFile').value === 'true';
+                const sectionKey = document.getElementById('currentSectionIndex').value;
+                const isDateRequired = document.getElementById('isDateRequired').value === 'true';
+                const sectionRequired = document.getElementById('sectionRequired').value === 'true';
+
+                let isValid = true;
+
+                // 验证文件名称
+                if (!fileName) {
+                    const input = document.getElementById('fileNameInput');
+                    input.classList.add('error');
+                    input.nextElementSibling.classList.add('show');
+                    isValid = false;
+                }
+
+                // 验证文件选择
+                if (!fileInput.files.length) {
+                    fileInput.classList.add('error');
+                    fileInput.nextElementSibling.classList.add('show');
+                    isValid = false;
+                }
+
+                // 验证日期（严格区分必填/选填规则）
+                if (isDateRequired) {
+                    if (!startDate) {
+                        const input = document.getElementById('validStartDate');
+                        input.classList.add('error');
+                        input.nextElementSibling.classList.add('show');
+                        isValid = false;
+                    }
+                    if (!endDate) {
+                        const input = document.getElementById('validEndDate');
+                        input.classList.add('error');
+                        input.nextElementSibling.classList.add('show');
+                        isValid = false;
+                    }
+                    if (startDate && endDate && new Date(endDate) < new Date(startDate)) {
+                        const input = document.getElementById('validEndDate');
+                        input.classList.add('error');
+                        input.nextElementSibling.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i>结束日期不能早于开始日期';
+                        input.nextElementSibling.classList.add('show');
+                        isValid = false;
+                    }
+                } else if (startDate || endDate) {
+                    if (!startDate || !endDate) {
+                        const errEl = startDate ? document.getElementById('validEndDate').nextElementSibling : document.getElementById('validStartDate').nextElementSibling;
+                        errEl.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i>开始和结束日期需同时填写';
+                        errEl.classList.add('show');
+                        isValid = false;
+                    } else if (new Date(endDate) < new Date(startDate)) {
+                        const input = document.getElementById('validEndDate');
+                        input.classList.add('error');
+                        input.nextElementSibling.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i>结束日期不能早于开始日期';
+                        input.nextElementSibling.classList.add('show');
+                        isValid = false;
+                    }
+                }
+
+                if (!isValid) return;
+
+                // 构建文件信息
+                const file = fileInput.files[0];
+                const fileSize = (file.size / 1024).toFixed(2) + 'KB';
+                let fileInfoHtml = `
+                    <div class="upload-name font-medium">${fileName}</div>
+                    <div class="upload-meta mt-1 flex flex-wrap gap-2">
+                        <span><i class="fa-solid fa-file"></i> ${file.name}</span>
+                        <span><i class="fa-solid fa-database"></i> ${fileSize}</span>
+                `;
+
+                if (startDate && endDate) {
+                    fileInfoHtml += `<span><i class="fa-solid fa-calendar"></i> 有效期：${startDate} 至 ${endDate}</span>`;
+                } else {
+                    fileInfoHtml += '<span><i class="fa-solid fa-infinity"></i> 长期有效</span>';
+                }
+                fileInfoHtml += '</div>';
+
+                const remark = document.getElementById('fileRemark').value.trim();
+                if (remark) {
+                    fileInfoHtml += `<div class="mt-2 text-sm"><i class="fa-solid fa-comment"></i> ${remark}</div>`;
+                }
+
+                // 处理自定义文件
+                if (isCustom) {
+                    const addBtn = document.querySelector(`.add-file-btn[data-custom-file-id="${fileSubType}"]`);
+                    if (addBtn) {
+                        const sectionContainer = document.getElementById(`section-${sectionKey}`);
+                        const customItem = document.createElement('div');
+                        customItem.className = 'file-detail-item';
+                        customItem.id = `file-item-${fileSubType}`;
+                        customItem.innerHTML = `
+                            <div class="file-detail-header">
+                                <div class="file-detail-title">${fileName}</div>
+                                <button class="upload-btn"
+                                        data-file-type="${fileType}"
+                                        data-file-subtype="${fileSubType}"
+                                        data-file-name="${fileName}"
+                                        data-section-key="${sectionKey}"
+                                        data-date-required="${isDateRequired}"
+                                        data-section-required="${sectionRequired}">
+                                    <i class="fa-solid fa-upload"></i> 重新上传
+                                </button>
+                            </div>
+                            <div class="file-detail-info" id="file-info-${fileSubType}">${fileInfoHtml}</div>
+                            <button class="upload-del mt-2" data-file-id="${fileSubType}">
+                                <i class="fa-solid fa-trash"></i> 删除
+                            </button>
+                        `;
+                        sectionContainer.insertBefore(customItem, addBtn);
+                        customItem.querySelector('.upload-del').addEventListener('click', function() {
+                            this.closest('.file-detail-item').remove();
+                            checkSectionRequired(addBtn.closest('.qualification-card'));
+                        });
+                        customItem.querySelector('.upload-btn').addEventListener('click', function() {
+                            const params = this.dataset;
+                            openUploadModal(
+                                params.fileType,
+                                params.fileSubtype,
+                                params.fileName,
+                                true,
+                                params.sectionKey,
+                                params.dateRequired === 'true',
+                                params.sectionRequired === 'true'
+                            );
+                        });
+                        delete addBtn.dataset.customFileId;
+                        checkSectionRequired(addBtn.closest('.qualification-card'));
+                    }
+                } else {
+                    // 处理预设文件
+                    const fileInfoEl = document.getElementById(`file-info-${fileSubType}`);
+                    const delBtn = document.querySelector(`.upload-del[data-file-id="${fileSubType}"]`);
+                    if (fileInfoEl) {
+                        fileInfoEl.innerHTML = fileInfoHtml;
+                        delBtn.classList.remove('hidden');
+                        checkSectionRequired(fileInfoEl.closest('.qualification-card'));
+                    }
+                }
+
+                closeModal();
+                alert(`${fileName} 上传成功！`);
+            });
+        }
+
+        // 表单提交（增强版）
+        function initFormSubmit() {
+            const form = document.getElementById('supplierForm');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                let isValid = true;
+                document.querySelectorAll('.form-input, .form-select').forEach(input => {
+                    if (!validateFormItem(input)) isValid = false;
+                });
+
+                const checkedTypes = Array.from(document.querySelectorAll('.business-type:checked')).length;
+                if (checkedTypes === 0) {
+                    document.getElementById('businessTypeError').classList.add('show');
+                    isValid = false;
+                }
+
+                // 验证信用代码格式
+                const creditCodeInput = document.getElementById('creditCode');
+                const creditCodeTypeSelect = document.getElementById('creditCodeType');
+                const creditCodeFormatError = document.getElementById('creditCodeFormatError');
+                if (creditCodeTypeSelect.value === '01' && creditCodeInput.value.trim().length !== 18) {
+                    creditCodeInput.classList.add('error');
+                    creditCodeFormatError.classList.add('show');
+                    isValid = false;
+                }
+
+                // 验证资质文件必填项
+                document.querySelectorAll('.qualification-card').forEach(card => {
+                    if (card.dataset.sectionRequired === 'true') {
+                        let hasUploaded = false;
+                        card.querySelectorAll('.file-detail-item').forEach(item => {
+                            const info = item.querySelector('.file-detail-info');
+                            if (!info.textContent.includes('未上传文件')) hasUploaded = true;
+                        });
+                        if (!hasUploaded) {
+                            isValid = false;
+                            alert(`【${card.querySelector('.qualification-card-title').textContent}】必须上传至少一个文件`);
+                        }
+                    }
+                });
+
+                if (isValid) {
+                    // 构建表单数据
+                    const formData = {
+                        supplierName: document.getElementById('supplierName').value,
+                        supplierShortName: document.getElementById('supplierShortName').value,
+                        supplierEnglishName: document.getElementById('supplierEnglishName').value,
+                        supplierBelongType: document.getElementById('supplierBelongType').value,
+                        supplierTradeType: document.getElementById('supplierTradeType').value,
+                        paymentType: document.getElementById('paymentType').value,
+                        supplierCategory: document.getElementById('supplierCategory').value,
+                        creditCodeType: document.getElementById('creditCodeType').value,
+                        creditCode: document.getElementById('creditCode').value,
+                        legalPerson: document.getElementById('legalPerson').value,
+                        registeredCapital: document.getElementById('registeredCapital').value,
+                        registeredCurrency: document.getElementById('registeredCurrency').value,
+                        registeredUnit: document.getElementById('registeredUnit').value,
+                        establishmentDate: document.getElementById('establishmentDate').value,
+                        validityPeriod: document.getElementById('validityPeriod').value,
+                        riskLevel: document.getElementById('riskLevel').value,
+                        regionType: document.getElementById('regionType').value,
+                        countryRegion: document.getElementById('countryRegion').value,
+                        timezone: document.getElementById('timezone').value,
+                        businessLanguage: document.getElementById('businessLanguage').value,
+                        businessTypes: Array.from(document.querySelectorAll('.business-type:checked')).map(cb => cb.value),
+                        province: document.getElementById('province').value,
+                        city: document.getElementById('city').value,
+                        district: document.getElementById('district').value,
+                        registerAddress: document.getElementById('registerAddress').value,
+                        registerAddressEn: document.getElementById('registerAddressEn').value,
+                        businessScope: document.getElementById('businessScope').value,
+                        evaluationRemark: document.getElementById('evaluationRemark').value
+                    };
+                    
+                    console.log('表单提交数据：', formData);
+                    alert('表单提交成功！');
+                } else {
+                    alert('表单填写有误，请检查必填项和格式！');
+                    // 滚动到第一个错误项
+                    const firstError = document.querySelector('.form-error.show');
+                    if (firstError) {
+                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }
+            });
+
+            function validateFormItem(input) {
+                const value = input.value.trim();
+                const isRequired = input.closest('.form-item').querySelector('.form-label.required') !== null;
+                const errorEls = input.parentElement.querySelectorAll('.form-error');
+
+                input.classList.remove('error');
+                errorEls.forEach(el => el.classList.remove('show'));
+
+                if (isRequired && value === '') {
+                    input.classList.add('error');
+                    errorEls[0]?.classList.add('show');
+                    return false;
+                }
+                return true;
+            }
+        }
+
+        // 服务商英文名称显示逻辑
+        function initEnglishNameLogic() {
+            const englishNameItem = document.getElementById('englishNameItem');
+            const businessTypeCheckboxes = document.querySelectorAll('.business-type');
+            
+            function updateEnglishNameRequired() {
+                const isProvider = Array.from(businessTypeCheckboxes).some(cb => cb.checked && cb.value === '服务提供商');
+                const label = englishNameItem.querySelector('.form-label');
+                const hint = englishNameItem.querySelector('.form-hint');
+                
+                if (isProvider) {
+                    label.classList.add('required');
+                    hint.textContent = '服务商类型必填';
+                } else {
+                    label.classList.remove('required');
+                    hint.textContent = '仅服务商类型必填';
+                }
+            }
+
+            businessTypeCheckboxes.forEach(cb => cb.addEventListener('change', updateEnglishNameRequired));
+            updateEnglishNameRequired();
+        }
+
+        // 新增：初始化区域类型联动（国内/国外地址切换）
+        function initRegionTypeLinkage() {
+            const regionTypeSelect = document.getElementById('regionType');
+            const addressRegionWrapper = document.getElementById('addressRegionWrapper');
+            const registerAddressItem = document.getElementById('registerAddressItem');
+            const registerAddressEnItem = document.getElementById('registerAddressEnItem');
+            
+            // 初始切换一次
+            switchRegionType();
+            
+            // 监听区域类型变化
+            regionTypeSelect.addEventListener('change', switchRegionType);
+            
+            // 切换国内/国外地址显示
+            function switchRegionType() {
+                const regionType = regionTypeSelect.value;
+                
+                if (regionType === 'domestic') {
+                    // 国内
+                    addressRegionWrapper.style.display = 'block';
+                    registerAddressItem.style.display = 'block';
+                    registerAddressEnItem.style.display = 'none';
+                } else {
+                    // 国外
+                    addressRegionWrapper.style.display = 'none';
+                    registerAddressItem.style.display = 'none';
+                    registerAddressEnItem.style.display = 'block';
+                }
+            }
+        }
+
+        // 新增：初始化省市区联动
+        function initProvinceCityDistrictLinkage() {
+            const provinceSelect = document.getElementById('province');
+            const citySelect = document.getElementById('city');
+            const districtSelect = document.getElementById('district');
+            
+            // 模拟省市区数据
+            const regionData = {
+                '北京市': {
+                    '北京市': ['东城区', '西城区', '朝阳区', '海淀区', '丰台区', '石景山区']
+                },
+                '上海市': {
+                    '上海市': ['黄浦区', '徐汇区', '长宁区', '静安区', '普陀区', '虹口区']
+                },
+                '广东省': {
+                    '广州市': ['天河区', '越秀区', '海珠区', '荔湾区', '白云区', '黄埔区'],
+                    '深圳市': ['福田区', '罗湖区', '南山区', '宝安区', '龙岗区', '盐田区']
+                },
+                '江苏省': {
+                    '南京市': ['玄武区', '秦淮区', '鼓楼区', '建邺区', '栖霞区'],
+                    '苏州市': ['姑苏区', '虎丘区', '吴中区', '相城区', '吴江区']
+                }
+            };
+            
+            // 监听省份变化
             provinceSelect.addEventListener('change', function() {
                 const province = this.value;
                 // 清空市和区县
                 citySelect.innerHTML = '<option value="">请先选择省/直辖市</option>';
                 districtSelect.innerHTML = '<option value="">请先选择市</option>';
-
-                if (province && regionData[province]) {
-                    // 添加城市选项
-                    Object.keys(regionData[province]).forEach(city => {
+                
+                if (province) {
+                    // 填充市
+                    const cities = Object.keys(regionData[province]);
+                    cities.forEach(city => {
                         const option = document.createElement('option');
                         option.value = city;
                         option.textContent = city;
@@ -1025,17 +1373,18 @@
                     });
                 }
             });
-
-            // 城市变化监听
+            
+            // 监听市变化
             citySelect.addEventListener('change', function() {
                 const province = provinceSelect.value;
                 const city = this.value;
                 // 清空区县
                 districtSelect.innerHTML = '<option value="">请先选择市</option>';
-
-                if (province && city && regionData[province] && regionData[province][city]) {
-                    // 添加区县选项
-                    regionData[province][city].forEach(district => {
+                
+                if (province && city) {
+                    // 填充区县
+                    const districts = regionData[province][city];
+                    districts.forEach(district => {
                         const option = document.createElement('option');
                         option.value = district;
                         option.textContent = district;
@@ -1043,107 +1392,7 @@
                     });
                 }
             });
-
-            // 5. 区域类型切换（国内/国外）
-            const regionTypeSelect = document.getElementById('regionType');
-            const addressRegionWrapper = document.getElementById('addressRegionWrapper');
-            const registerAddressItem = document.getElementById('registerAddressItem');
-            const registerAddressEnItem = document.getElementById('registerAddressEnItem');
-
-            regionTypeSelect.addEventListener('change', function() {
-                if (this.value === 'domestic') {
-                    // 国内：显示省市区和中文地址
-                    addressRegionWrapper.style.display = 'block';
-                    registerAddressItem.style.display = 'block';
-                    registerAddressEnItem.style.display = 'none';
-                } else {
-                    // 国外：隐藏省市区，显示英文地址
-                    addressRegionWrapper.style.display = 'none';
-                    registerAddressItem.style.display = 'none';
-                    registerAddressEnItem.style.display = 'block';
-                }
-            });
-
-            // 6. 修复表单导航功能 - 动态生成导航项并实现滚动监听
-            function initAnchorNav() {
-                // 获取所有表单分组
-                const formGroups = document.querySelectorAll('.form-group');
-                const anchorNavList = document.getElementById('anchorNavList');
-                const formProgress = document.getElementById('formProgress');
-                
-                // 清空现有导航项
-                anchorNavList.innerHTML = '';
-                
-                // 为每个分组创建导航项
-                formGroups.forEach(group => {
-                    const groupId = group.id;
-                    const groupTitle = group.querySelector('.form-group-title').textContent.trim();
-                    const icon = group.querySelector('.form-group-title i').outerHTML;
-                    
-                    const navItem = document.createElement('div');
-                    navItem.className = 'anchor-nav-item';
-                    navItem.dataset.target = groupId;
-                    navItem.innerHTML = `
-                        <span class="anchor-nav-item-label">${icon} ${groupTitle}</span>
-                        <span class="anchor-nav-item-status status-empty"></span>
-                    `;
-                    
-                    // 点击导航项滚动到对应位置
-                    navItem.addEventListener('click', function() {
-                        const target = document.getElementById(this.dataset.target);
-                        if (target) {
-                            target.scrollIntoView({
-                                behavior: 'smooth',
-                                block: 'start'
-                            });
-                        }
-                    });
-                    
-                    anchorNavList.appendChild(navItem);
-                });
-                
-                // 监听滚动事件，更新导航状态
-                window.addEventListener('scroll', function() {
-                    const scrollPosition = window.scrollY + 200;
-                    const totalHeight = document.body.scrollHeight - window.innerHeight;
-                    const progress = Math.round((scrollPosition / totalHeight) * 100);
-                    
-                    // 更新进度百分比
-                    formProgress.textContent = `${Math.min(progress, 100)}%`;
-                    
-                    // 更新当前激活的导航项
-                    formGroups.forEach((group, index) => {
-                        const groupTop = group.offsetTop;
-                        const groupBottom = groupTop + group.offsetHeight;
-                        const navItems = anchorNavList.querySelectorAll('.anchor-nav-item');
-                        const navItem = navItems[index];
-                        const statusDot = navItem.querySelector('.anchor-nav-item-status');
-                        
-                        // 判断当前分组是否在可视区域
-                        if (scrollPosition >= groupTop && scrollPosition < groupBottom) {
-                            // 激活当前项
-                            navItems.forEach(item => item.classList.remove('active'));
-                            navItem.classList.add('active');
-                            statusDot.className = 'anchor-nav-item-status status-part';
-                        } else if (scrollPosition > groupBottom) {
-                            // 已完成
-                            statusDot.className = 'anchor-nav-item-status status-complete';
-                        } else {
-                            // 未开始
-                            if (!navItem.classList.contains('active')) {
-                                statusDot.className = 'anchor-nav-item-status status-empty';
-                            }
-                        }
-                    });
-                });
-                
-                // 初始触发一次滚动事件
-                window.dispatchEvent(new Event('scroll'));
-            }
-            
-            // 初始化表单导航
-            initAnchorNav();
-        });
+        }
     </script>
 </body>
 </html>
